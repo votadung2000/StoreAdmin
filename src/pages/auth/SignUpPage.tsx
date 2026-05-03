@@ -1,25 +1,28 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  signUpSchema,
-  type SignUpFormValues,
-} from '@/schemas/authSchema';
+import { signUpSchema, type SignUpFormValues } from '@/schemas/authSchema';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { PasswordInput } from '@/components/PasswordInput';
 import { SocialAuth } from '@/components/auth/SocialAuth';
 import { ROUTES } from '@/constants/routes';
 
 export const SignUpPage = () => {
   const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isLoading },
-  } = useForm<SignUpFormValues>({
+  const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
+    mode: 'all',
     defaultValues: {
       email: '',
       password: '',
@@ -27,9 +30,10 @@ export const SignUpPage = () => {
     },
   });
 
+  const { isSubmitting, isValid } = form.formState;
+
   const onSubmit = (data: SignUpFormValues) => {
-    console.log(data);
-    // Xử lý đăng ký ở đây
+    console.log('data', data);
     navigate(ROUTES.DASHBOARD.ROOT);
   };
 
@@ -49,83 +53,104 @@ export const SignUpPage = () => {
         </p>
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className='space-y-4'
-      >
-        <div>
-          <Input
-            type='email'
-            placeholder='Email'
-            className={`h-12 ${errors.email ? 'border-destructive' : 'border-input'}`}
-            {...register('email')}
-          />
-          {errors.email && (
-            <p className='text-destructive text-xs mt-1'>
-              {errors.email.message}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <Input
-            type='password'
-            placeholder='Password'
-            className={`h-12 ${errors.password ? 'border-destructive' : 'border-input'}`}
-            {...register('password')}
-          />
-          {errors.password && (
-            <p className='text-destructive text-xs mt-1'>
-              {errors.password.message}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <Input
-            type='password'
-            placeholder='Confirm Password'
-            className={`h-12 ${errors.confirmPassword ? 'border-destructive' : 'border-input'}`}
-            {...register('confirmPassword')}
-          />
-          {errors.confirmPassword && (
-            <p className='text-destructive text-xs mt-1'>
-              {errors.confirmPassword.message}
-            </p>
-          )}
-        </div>
-
-        <Button
-          type='submit'
-          disabled={isLoading}
-          className='w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground flex justify-between items-center px-4 rounded-md uppercase text-sm font-bold tracking-wider transition-colors'
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='flex flex-col gap-6'
         >
-          <span>Sign Up</span>
-          <ArrowRight className='h-4 w-4' />
-        </Button>
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type='email'
+                    placeholder='name@example.com'
+                    className='h-12'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <SocialAuth />
+          <FormField
+            control={form.control}
+            name='password'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <PasswordInput
+                    placeholder='••••••••'
+                    classNameInput='h-12'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <div className='pt-2'>
-          <p className='text-sm text-muted-foreground leading-relaxed'>
-            By clicking Sign Up, you agree to our website{' '}
-            <a
-              href='#'
-              className='underline underline-offset-4 hover:text-primary transition-colors'
-            >
-              Terms of Service
-            </a>{' '}
-            and{' '}
-            <a
-              href='#'
-              className='underline underline-offset-4 hover:text-primary transition-colors'
-            >
-              Privacy Policy
-            </a>
-            .
-          </p>
-        </div>
-      </form>
+          <FormField
+            control={form.control}
+            name='confirmPassword'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <PasswordInput
+                    placeholder='••••••••'
+                    classNameInput='h-12'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            type='submit'
+            disabled={isSubmitting || !isValid}
+            className='w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground flex justify-between items-center px-4 rounded-md uppercase text-sm font-bold tracking-wider transition-colors'
+          >
+            {isSubmitting ? (
+              <Loader2 className='h-4 w-4 animate-spin mx-auto' />
+            ) : (
+              <>
+                <span>SIGN UP</span>
+                <ArrowRight className='h-4 w-4' />
+              </>
+            )}
+          </Button>
+
+          <SocialAuth />
+
+          <div className='pt-2'>
+            <p className='text-sm text-muted-foreground leading-relaxed'>
+              By clicking Sign Up, you agree to our website{' '}
+              <a
+                href='#'
+                className='underline underline-offset-4 hover:text-primary transition-colors'
+              >
+                Terms of Service
+              </a>{' '}
+              and{' '}
+              <a
+                href='#'
+                className='underline underline-offset-4 hover:text-primary transition-colors'
+              >
+                Privacy Policy
+              </a>
+              .
+            </p>
+          </div>
+        </form>
+      </Form>
     </>
   );
 };

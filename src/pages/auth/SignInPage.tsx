@@ -24,17 +24,17 @@ export const SignInPage = () => {
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
+    mode: 'all',
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const { isSubmitting } = form.formState;
+  const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = (data: SignInFormValues) => {
     console.log('data', data);
-    // Gọi API ở đây
     signIn('mock-jwt-token');
     navigate(ROUTES.DASHBOARD.ROOT);
   };
@@ -107,7 +107,7 @@ export const SignInPage = () => {
 
           <Button
             type='submit'
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isValid}
             className='w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground flex justify-between items-center px-4 rounded-md uppercase text-sm font-bold tracking-wider transition-colors'
           >
             {isSubmitting ? (
