@@ -5,6 +5,7 @@ import * as z from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { ROUTES } from '@/constants/routes';
 
 const registerSchema = z
   .object({
@@ -38,7 +39,7 @@ export const SignUpPage = () => {
   const onSubmit = (data: RegisterFormValues) => {
     console.log('register data', data);
     // Gọi API đăng ký ở đây
-    navigate('/login');
+    navigate(ROUTES.AUTH.SIGN_IN);
   };
 
   return (
@@ -51,7 +52,7 @@ export const SignUpPage = () => {
           Enter your email and password below to create your account. <br />
           Already have an account?{' '}
           <Link
-            to='/login'
+            to={ROUTES.AUTH.SIGN_IN}
             className='underline underline-offset-4 hover:text-zinc-900 font-medium'
           >
             Sign In

@@ -19,7 +19,7 @@ import { SocialAuth } from '@/components/auth/SocialAuth';
 import { ROUTES } from '@/constants/routes';
 
 export const SignInPage = () => {
-  const login = useAuthStore((state) => state.login);
+  const signIn = useAuthStore((state) => state.signIn);
   const navigate = useNavigate();
 
   const form = useForm<SignInFormValues>({
@@ -35,7 +35,7 @@ export const SignInPage = () => {
   const onSubmit = (data: SignInFormValues) => {
     console.log('data', data);
     // Gọi API ở đây
-    login('mock-jwt-token');
+    signIn('mock-jwt-token');
     navigate(ROUTES.DASHBOARD.ROOT);
   };
 

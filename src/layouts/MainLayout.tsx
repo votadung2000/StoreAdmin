@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
+import { ROUTES } from '@/constants/routes';
 
 export const MainLayout = () => {
   const logout = useAuthStore((state) => state.logout);
@@ -7,7 +8,7 @@ export const MainLayout = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate(ROUTES.AUTH.SIGN_IN);
   };
 
   return (

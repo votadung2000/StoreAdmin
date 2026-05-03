@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, RefreshCw } from 'lucide-react';
 
 import { otpSchema, type OTPFormValues } from '@/schemas/authSchema';
+import { ROUTES } from '@/constants/routes';
 
 export const OTPPage = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export const OTPPage = () => {
   const onSubmit = (data: OTPFormValues) => {
     console.log('OTP submitted', data.otp);
     // Gọi API kiểm tra OTP ở đây
-    navigate('/');
+    navigate(ROUTES.DASHBOARD.ROOT);
   };
 
   return (
@@ -62,7 +63,7 @@ export const OTPPage = () => {
           disabled={isLoading}
           className='w-full h-12 bg-zinc-900 hover:bg-zinc-800 text-white flex justify-between items-center px-4 rounded-md uppercase text-xs font-bold tracking-wider'
         >
-          <span>Verify & Login</span>
+          <span>Verify & Sign In</span>
           <ArrowRight className='h-4 w-4' />
         </Button>
 
