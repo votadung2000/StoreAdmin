@@ -7,7 +7,7 @@ import { SignUpPage } from '@/pages/auth/SignUpPage';
 import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
 import { OTPPage } from '@/pages/auth/OTPPage';
 import { DashboardPage } from '@/pages/dashboard/DashboardPage';
-import { NotFoundPage } from '@/pages/NotFoundPage';
+import { NotFoundPage } from '@/pages/not-found/NotFoundPage';
 import { ProtectedRoute } from '@/routes/ProtectedRoute';
 import { PublicRoute } from '@/routes/PublicRoute';
 
