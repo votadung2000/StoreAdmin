@@ -34,7 +34,7 @@ export const SignUpPage = () => {
 
   const onSubmit = (data: SignUpFormValues) => {
     console.log('data', data);
-    navigate(ROUTES.DASHBOARD.ROOT);
+    navigate(ROUTES.MAIN.DASHBOARD);
   };
 
   return (

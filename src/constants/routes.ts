@@ -5,7 +5,10 @@ export const ROUTES = {
     FORGOT_PASSWORD: '/forgot-password',
     OTP: '/otp',
   },
-  DASHBOARD: {
-    ROOT: '/',
+  MAIN: {
+    DASHBOARD: '/',
+    PRODUCTS: '/products',
+    ORDERS: '/orders',
+    CATEGORIES: '/categories',
   },
 } as const;

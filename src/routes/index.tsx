@@ -7,6 +7,9 @@ import { SignUpPage } from '@/pages/auth/SignUpPage';
 import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
 import { OTPPage } from '@/pages/auth/OTPPage';
 import { DashboardPage } from '@/pages/dashboard/DashboardPage';
+import { ProductsPage } from '@/pages/products/ProductsPage';
+import { OrdersPage } from '@/pages/orders/OrdersPage';
+import { CategoriesPage } from '@/pages/categories/CategoriesPage';
 import { NotFoundPage } from '@/pages/not-found/NotFoundPage';
 import { ProtectedRoute } from '@/routes/ProtectedRoute';
 import { PublicRoute } from '@/routes/PublicRoute';
@@ -45,8 +48,20 @@ export const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
           {
-            path: '/',
+            path: ROUTES.MAIN.DASHBOARD,
             element: <DashboardPage />,
+          },
+          {
+            path: ROUTES.MAIN.PRODUCTS,
+            element: <ProductsPage />,
+          },
+          {
+            path: ROUTES.MAIN.ORDERS,
+            element: <OrdersPage />,
+          },
+          {
+            path: ROUTES.MAIN.CATEGORIES,
+            element: <CategoriesPage />,
           },
         ],
       },

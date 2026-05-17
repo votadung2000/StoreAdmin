@@ -1,39 +1,29 @@
-import { Outlet, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/stores/authStore';
-import { ROUTES } from '@/constants/routes';
+import { Outlet } from 'react-router-dom';
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/AppSidebar';
 
 export const MainLayout = () => {
-  const logout = useAuthStore((state) => state.logout);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate(ROUTES.AUTH.SIGN_IN);
-  };
-
   return (
-    <div className='min-h-screen bg-gray-100 flex flex-col'>
-      <header className='bg-white shadow-sm border-b'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex justify-between h-16 items-center'>
-            <div className='shrink-0 flex items-center'>
-              <h1 className='text-xl font-bold text-indigo-600'>Store Admin</h1>
-            </div>
-            <div className='flex items-center'>
-              <button
-                onClick={handleLogout}
-                className='ml-4 px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors'
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <SidebarProvider className='flex-row'>
+      <AppSidebar />
 
-      <main className='flex-1 p-6 max-w-7xl mx-auto w-full'>
-        <Outlet />
-      </main>
-    </div>
+      <SidebarInset>
+        {/* Top bar */}
+        <header className='flex h-14 shrink-0 items-center gap-3 border-b bg-background px-4'>
+          <SidebarTrigger className='text-muted-foreground hover:text-foreground' />
+          <div className='h-5 w-px bg-border' />
+          <span className='text-sm text-muted-foreground'>Store Admin</span>
+        </header>
+
+        {/* Page content */}
+        <main className='flex-1 overflow-y-auto bg-muted/30'>
+          <Outlet />
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
