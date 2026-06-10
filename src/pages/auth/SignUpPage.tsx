@@ -2,6 +2,7 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signUpSchema, type SignUpFormValues } from '@/schemas/authSchema';
+import { useAuthStore } from '@/stores/authStore';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Loader2 } from 'lucide-react';
@@ -18,6 +19,7 @@ import { AppSocialAuth } from '@/components/shared/app-social-auth';
 import { ROUTES } from '@/constants/routes';
 
 export const SignUpPage = () => {
+  const signIn = useAuthStore((state) => state.signIn);
   const navigate = useNavigate();
 
   const form = useForm<SignUpFormValues>({
@@ -32,8 +34,8 @@ export const SignUpPage = () => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = (data: SignUpFormValues) => {
-    console.log('data', data);
+  const onSubmit = () => {
+    signIn('mock-jwt-token');
     navigate({ to: ROUTES.MAIN.DASHBOARD });
   };
 

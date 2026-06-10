@@ -22,9 +22,7 @@ export const ForgotPasswordPage = () => {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmit = (data: ForgotPasswordFormValues) => {
-    console.log(data);
-    // Xử lý gửi OTP ở đây
+  const onSubmit = () => {
     navigate({ to: ROUTES.AUTH.OTP });
   };
 

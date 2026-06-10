@@ -5,5 +5,4 @@ export {
   type SidebarData,
   type SidebarGroup,
   type SidebarItem,
-  type SidebarUser,
 } from './data/sidebar-data';

@@ -22,9 +22,7 @@ export const OTPPage = () => {
     },
   });
 
-  const onSubmit = (data: OTPFormValues) => {
-    console.log('OTP submitted', data.otp);
-    // Gọi API kiểm tra OTP ở đây
+  const onSubmit = () => {
     navigate({ to: ROUTES.MAIN.DASHBOARD });
   };
 

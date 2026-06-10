@@ -1,17 +1,27 @@
 import { ROUTES } from '@/constants/routes';
 import { Link } from '@tanstack/react-router';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { PageState } from '@/components/shared/app-page-state';
 
 export const NotFoundPage = () => {
   return (
-    <div className='min-h-screen flex flex-col items-center justify-center bg-gray-50'>
-      <h1 className='text-6xl font-bold text-indigo-600 mb-4'>404</h1>
-      <p className='text-xl text-gray-700 mb-8'>Page not found</p>
-      <Link
-        to={ROUTES.MAIN.DASHBOARD}
-        className='px-6 py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors'
+    <div className='flex min-h-svh items-center justify-center bg-muted/30 p-6'>
+      <PageState
+        variant='empty'
+        title='Page not found'
+        description='The requested admin workspace route does not exist.'
+        className='w-full max-w-lg'
+      />
+      <Button
+        asChild
+        className='fixed bottom-6'
       >
-        Home
-      </Link>
+        <Link to={ROUTES.MAIN.DASHBOARD}>
+          <ArrowLeft />
+          Dashboard
+        </Link>
+      </Button>
     </div>
   );
 };

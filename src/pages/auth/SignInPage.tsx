@@ -33,8 +33,7 @@ export const SignInPage = () => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = (data: SignInFormValues) => {
-    console.log('data', data);
+  const onSubmit = () => {
     signIn('mock-jwt-token');
     navigate({ to: ROUTES.MAIN.DASHBOARD });
   };

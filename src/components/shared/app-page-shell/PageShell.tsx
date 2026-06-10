@@ -33,18 +33,18 @@ export function PageShell({
   return (
     <section
       className={cn(
-        'mx-auto flex w-full max-w-7xl flex-col gap-5 p-4 sm:p-5 lg:p-6',
+        'mx-auto flex w-full max-w-[1600px] flex-col gap-6 p-4 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-bottom-2 sm:p-5 lg:p-6',
         className,
       )}
     >
       <div
         className={cn(
-          'flex flex-wrap items-end justify-between gap-4',
+          'flex flex-wrap items-start justify-between gap-4',
           headerClassName,
         )}
       >
         <div className='min-w-0'>
-          <h1 className='text-2xl font-semibold tracking-tight'>{title}</h1>
+          <h1 className='text-2xl font-semibold'>{title}</h1>
           {description && (
             <p className='mt-1 text-sm text-muted-foreground'>{description}</p>
           )}

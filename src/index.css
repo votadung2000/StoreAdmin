@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
+@import '@fontsource-variable/geist';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -9,7 +10,7 @@
   --color-brand-white: #fafafa;
 
   --font-heading: var(--font-sans);
-  --font-sans: 'Rubik', sans-serif;
+  --font-sans: 'Geist Variable', Inter, ui-sans-serif, system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -69,11 +70,11 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --chart-1: oklch(0.64 0.18 152);
+  --chart-2: oklch(0.62 0.17 252);
+  --chart-3: oklch(0.73 0.17 76);
+  --chart-4: oklch(0.62 0.2 24);
+  --chart-5: oklch(0.58 0.15 310);
   --radius: 0.625rem;
   --sidebar: var(--color-brand-white);
   --sidebar-foreground: var(--color-brand-black);
@@ -104,11 +105,11 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --chart-1: oklch(0.72 0.17 152);
+  --chart-2: oklch(0.7 0.16 252);
+  --chart-3: oklch(0.78 0.16 76);
+  --chart-4: oklch(0.69 0.18 24);
+  --chart-5: oklch(0.72 0.15 310);
   --sidebar: var(--color-brand-black);
   --sidebar-foreground: var(--color-brand-white);
   --sidebar-primary: oklch(0.488 0.243 264.376);

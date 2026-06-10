@@ -1,5 +1,6 @@
 import { type ComponentPropsWithoutRef } from 'react';
-import { Store } from 'lucide-react';
+import { Link, useNavigate } from '@tanstack/react-router';
+import { LogOut, Store } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -9,19 +10,21 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
-  useSidebar,
 } from '@/components/ui/sidebar';
 import { NavItem } from './components/NavItem';
-import { UserMenu } from './components/UserMenu';
 import { sidebarData, type SidebarData } from './data/sidebar-data';
 import { cn } from '@/lib/utils';
+import { ROUTES } from '@/constants/routes';
+import { useAuthStore } from '@/stores/authStore';
 
 export type AppSidebarProps = Omit<
   ComponentPropsWithoutRef<typeof Sidebar>,
   'children'
 > & {
-  /** Data used to render the brand, user summary, and navigation groups. */
+  /** Data used to render the brand and navigation groups. */
   data?: SidebarData;
 };
 
@@ -36,8 +39,13 @@ export function AppSidebar({
   className,
   ...props
 }: AppSidebarProps) {
-  const { state } = useSidebar();
-  const collapsed = state === 'collapsed';
+  const logout = useAuthStore((s) => s.logout);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate({ to: ROUTES.AUTH.SIGN_IN });
+  };
 
   return (
     <Sidebar
@@ -45,22 +53,30 @@ export function AppSidebar({
       className={cn('border-r border-sidebar-border', className)}
       {...props}
     >
-      <SidebarHeader className='p-4'>
-        <div className='flex items-center gap-3 overflow-hidden'>
-          <div className='flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
-            <Store size={18} />
-          </div>
-          {!collapsed && (
-            <div className='min-w-0'>
-              <p className='truncate text-base font-semibold tracking-tight'>
-                {data.brand.name}
-              </p>
-              <p className='truncate text-xs text-muted-foreground'>
-                {data.brand.description}
-              </p>
-            </div>
-          )}
-        </div>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              size='lg'
+              tooltip={data.brand.name}
+            >
+              <Link to={ROUTES.MAIN.DASHBOARD}>
+                <div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
+                  <Store size={18} />
+                </div>
+                <div className='grid flex-1 text-left text-sm leading-tight'>
+                  <span className='truncate font-semibold'>
+                    {data.brand.name}
+                  </span>
+                  <span className='truncate text-xs'>
+                    {data.brand.description}
+                  </span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
 
       <SidebarContent>
@@ -72,7 +88,6 @@ export function AppSidebar({
                 {group.items.map((item) => (
                   <NavItem
                     key={`${group.label}-${item.label}`}
-                    collapsed={collapsed}
                     item={item}
                   />
                 ))}
@@ -82,11 +97,20 @@ export function AppSidebar({
         ))}
       </SidebarContent>
 
-      <SidebarFooter className='p-3'>
-        <UserMenu
-          collapsed={collapsed}
-          user={data.user}
-        />
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={handleLogout}
+              aria-label='Logout'
+              tooltip='Logout'
+              className='text-destructive hover:bg-destructive/10 hover:text-destructive focus-visible:ring-destructive/30'
+            >
+              <LogOut />
+              <span>Logout</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
