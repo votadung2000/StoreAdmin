@@ -1,5 +1,5 @@
 import { LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/react-router';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants/routes';
@@ -29,7 +29,7 @@ export function UserMenu({ collapsed, user }: UserMenuProps) {
 
   const handleLogout = () => {
     logout();
-    navigate(ROUTES.AUTH.SIGN_IN);
+    navigate({ to: ROUTES.AUTH.SIGN_IN });
   };
 
   return (

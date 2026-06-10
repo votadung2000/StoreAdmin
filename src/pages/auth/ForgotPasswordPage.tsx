@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
@@ -25,7 +25,7 @@ export const ForgotPasswordPage = () => {
   const onSubmit = (data: ForgotPasswordFormValues) => {
     console.log(data);
     // Xử lý gửi OTP ở đây
-    navigate(ROUTES.AUTH.OTP);
+    navigate({ to: ROUTES.AUTH.OTP });
   };
 
   return (

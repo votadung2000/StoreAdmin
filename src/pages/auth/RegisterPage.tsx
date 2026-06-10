@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -39,7 +39,7 @@ export const SignUpPage = () => {
   const onSubmit = (data: RegisterFormValues) => {
     console.log('register data', data);
     // Gọi API đăng ký ở đây
-    navigate(ROUTES.AUTH.SIGN_IN);
+    navigate({ to: ROUTES.AUTH.SIGN_IN });
   };
 
   return (

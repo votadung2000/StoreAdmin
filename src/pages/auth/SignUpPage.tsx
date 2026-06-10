@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signUpSchema, type SignUpFormValues } from '@/schemas/authSchema';
@@ -34,7 +34,7 @@ export const SignUpPage = () => {
 
   const onSubmit = (data: SignUpFormValues) => {
     console.log('data', data);
-    navigate(ROUTES.MAIN.DASHBOARD);
+    navigate({ to: ROUTES.MAIN.DASHBOARD });
   };
 
   return (

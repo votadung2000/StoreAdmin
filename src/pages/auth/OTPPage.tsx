@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
@@ -25,7 +25,7 @@ export const OTPPage = () => {
   const onSubmit = (data: OTPFormValues) => {
     console.log('OTP submitted', data.otp);
     // Gọi API kiểm tra OTP ở đây
-    navigate(ROUTES.MAIN.DASHBOARD);
+    navigate({ to: ROUTES.MAIN.DASHBOARD });
   };
 
   return (

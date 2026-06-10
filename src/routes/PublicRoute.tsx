@@ -1,5 +1,6 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from '@tanstack/react-router';
 import { useAuthStore } from '@/stores/authStore';
+import { ROUTES } from '@/constants/routes';
 
 export const PublicRoute = () => {
   const { isAuthenticated, isLoading } = useAuthStore();
@@ -14,7 +15,7 @@ export const PublicRoute = () => {
 
   return isAuthenticated ? (
     <Navigate
-      to='/'
+      to={ROUTES.MAIN.DASHBOARD}
       replace
     />
   ) : (

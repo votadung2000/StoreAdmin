@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from '@tanstack/react-router';
 import HeroImage from '@/assets/images/hero-image.png';
 import Logo from '@/assets/svgs/logo.svg';
 

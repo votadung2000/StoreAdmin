@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuthStore } from '@/stores/authStore';
@@ -36,7 +36,7 @@ export const SignInPage = () => {
   const onSubmit = (data: SignInFormValues) => {
     console.log('data', data);
     signIn('mock-jwt-token');
-    navigate(ROUTES.MAIN.DASHBOARD);
+    navigate({ to: ROUTES.MAIN.DASHBOARD });
   };
 
   return (

@@ -1,6 +1,5 @@
-import { NavLink } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { cn } from '@/lib/utils';
 import { type SidebarItem } from '../data/sidebar-data';
 
 export type NavItemProps = {
@@ -20,17 +19,17 @@ export function NavItem({ collapsed, item }: NavItemProps) {
         asChild
         tooltip={item.label}
       >
-        <NavLink
+        <Link
           to={item.to}
-          end={'end' in item ? item.end : undefined}
-          className={({ isActive }) =>
-            cn(
-              'flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-              isActive
-                ? 'bg-sidebar-primary text-sidebar-primary-foreground'
-                : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
-            )
-          }
+          activeOptions={{ exact: item.end }}
+          className='flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors'
+          activeProps={{
+            className: 'bg-sidebar-primary text-sidebar-primary-foreground',
+          }}
+          inactiveProps={{
+            className:
+              'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+          }}
         >
           <item.icon
             size={18}
@@ -46,7 +45,7 @@ export function NavItem({ collapsed, item }: NavItemProps) {
               )}
             </>
           )}
-        </NavLink>
+        </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
