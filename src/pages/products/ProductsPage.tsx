@@ -1,6 +1,6 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { PageShell } from '@/components/shared/layout/PageShell';
+import { PageShell } from '@/components/shared/app-page-shell';
 
 const products = [
   {
@@ -48,7 +48,7 @@ export const ProductsPage = () => (
       {products.map((product) => (
         <div
           key={product.sku}
-          className='rounded-lg border bg-background p-5 shadow-sm'
+          className='rounded-lg border bg-background p-4 shadow-sm'
         >
           <div className='mb-4 flex items-start justify-between gap-3'>
             <div>

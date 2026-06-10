@@ -1,4 +1,4 @@
-import { PageShell } from '@/components/shared/layout/PageShell';
+import { PageShell } from '@/components/shared/app-page-shell';
 
 const categories = [
   { name: 'Bags', products: 38, revenue: '$18,420' },
@@ -16,7 +16,7 @@ export const CategoriesPage = () => (
       {categories.map((category) => (
         <div
           key={category.name}
-          className='rounded-lg border bg-background p-5 shadow-sm'
+          className='rounded-lg border bg-background p-4 shadow-sm'
         >
           <h2 className='font-semibold'>{category.name}</h2>
           <p className='mt-1 text-sm text-muted-foreground'>

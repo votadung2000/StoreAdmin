@@ -1,25 +1,38 @@
 import * as React from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
 
-type PasswordInputProps = Omit<
+export type AppPasswordInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   'type'
 > & {
+  /** Ref forwarded to the native input element for form libraries and focus control. */
   ref?: React.Ref<HTMLInputElement>;
+  /** Optional className for the input wrapper. */
   classNameContainer?: string;
+  /** Optional className for the native input element. */
   classNameInput?: string;
 };
 
-export function PasswordInput({
+/**
+ * Password input with a built-in visibility toggle.
+ *
+ * This component intentionally owns only the reveal state and keeps all normal
+ * input props pass-through so it stays compatible with React Hook Form and
+ * plain controlled inputs.
+ */
+export function AppPasswordInput({
   classNameContainer,
   classNameInput,
   disabled,
   ref,
   ...props
-}: PasswordInputProps) {
+}: AppPasswordInputProps) {
   const [showPassword, setShowPassword] = React.useState(false);
+  const togglePasswordVisibility = React.useCallback(() => {
+    setShowPassword((prev) => !prev);
+  }, []);
 
   return (
     <div className={cn('relative rounded-md', classNameContainer)}>
@@ -39,7 +52,9 @@ export function PasswordInput({
         variant='ghost'
         disabled={disabled}
         className='absolute inset-e-1 top-1/2 h-6 w-6 -translate-y-1/2 rounded-md text-muted-foreground'
-        onClick={() => setShowPassword((prev) => !prev)}
+        onClick={togglePasswordVisibility}
+        aria-label={showPassword ? 'Hide password' : 'Show password'}
+        aria-pressed={showPassword}
       >
         {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
         <span className='sr-only'>

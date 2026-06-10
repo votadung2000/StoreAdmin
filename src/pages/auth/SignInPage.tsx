@@ -14,8 +14,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { PasswordInput } from '@/components/PasswordInput';
-import { SocialAuth } from '@/components/auth/SocialAuth';
+import { AppPasswordInput } from '@/components/shared/app-password-input';
+import { AppSocialAuth } from '@/components/shared/app-social-auth';
 import { ROUTES } from '@/constants/routes';
 
 export const SignInPage = () => {
@@ -87,7 +87,7 @@ export const SignInPage = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <PasswordInput
+                    <AppPasswordInput
                       placeholder='••••••••'
                       classNameInput='h-12'
                       {...field}
@@ -120,7 +120,7 @@ export const SignInPage = () => {
             )}
           </Button>
 
-          <SocialAuth />
+          <AppSocialAuth />
 
           <div className='pt-2'>
             <p className='text-sm text-muted-foreground leading-relaxed'>

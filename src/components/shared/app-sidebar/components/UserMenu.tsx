@@ -4,13 +4,13 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants/routes';
 import { useAuthStore } from '@/stores/authStore';
+import { type SidebarUser } from '../data/sidebar-data';
 
-type UserMenuProps = {
+export type UserMenuProps = {
+  /** Whether the parent sidebar is in icon-only mode. */
   collapsed: boolean;
-  user: {
-    name: string;
-    email: string;
-  };
+  /** Signed-in user summary displayed in the sidebar footer. */
+  user: SidebarUser;
 };
 
 function getInitials(name: string) {
@@ -20,7 +20,10 @@ function getInitials(name: string) {
   return `${parts[0][0] ?? ''}${parts[parts.length - 1][0] ?? ''}`.toUpperCase();
 }
 
-export const UserMenu = ({ collapsed, user }: UserMenuProps) => {
+/**
+ * Sidebar footer user summary with a logout action.
+ */
+export function UserMenu({ collapsed, user }: UserMenuProps) {
   const logout = useAuthStore((s) => s.logout);
   const navigate = useNavigate();
 
@@ -60,4 +63,4 @@ export const UserMenu = ({ collapsed, user }: UserMenuProps) => {
       </Button>
     </div>
   );
-};
+}

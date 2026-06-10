@@ -7,7 +7,7 @@ import {
   Users,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { PageShell } from '@/components/shared/layout/PageShell';
+import { PageShell } from '@/components/shared/app-page-shell';
 
 const stats = [
   {
@@ -83,7 +83,7 @@ export const DashboardPage = () => {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className='rounded-lg border bg-background p-5 shadow-sm'
+            className='rounded-lg border bg-background p-4 shadow-sm'
           >
             <div className='flex items-center justify-between'>
               <p className='text-sm font-medium text-muted-foreground'>
@@ -101,7 +101,7 @@ export const DashboardPage = () => {
       </section>
 
       <section className='grid gap-4 xl:grid-cols-[1.4fr_1fr]'>
-        <div className='rounded-lg border bg-background p-5 shadow-sm'>
+        <div className='rounded-lg border bg-background p-4 shadow-sm'>
           <div className='mb-5 flex items-center justify-between'>
             <div>
               <h2 className='font-semibold'>Revenue Trend</h2>
@@ -114,15 +114,15 @@ export const DashboardPage = () => {
               className='text-muted-foreground'
             />
           </div>
-          <div className='flex h-72 items-end gap-3'>
+          <div className='flex h-64 items-end gap-3'>
             {[38, 44, 51, 58, 54, 66, 72, 79, 86, 91, 96, 100].map(
               (height, index) => (
                 <div
                   key={index}
-                  className='flex flex-1 flex-col items-center gap-2'
+                  className='flex h-full flex-1 flex-col items-center justify-end gap-2'
                 >
                   <div
-                    className='w-full rounded-t-md bg-primary/85'
+                    className='w-full rounded-t-md bg-primary/85 transition-all hover:bg-primary'
                     style={{ height: `${height}%` }}
                   />
                   <span className='text-xs text-muted-foreground'>
@@ -134,7 +134,7 @@ export const DashboardPage = () => {
           </div>
         </div>
 
-        <div className='rounded-lg border bg-background p-5 shadow-sm'>
+        <div className='rounded-lg border bg-background p-4 shadow-sm'>
           <div className='mb-5'>
             <h2 className='font-semibold'>Recent Orders</h2>
             <p className='text-sm text-muted-foreground'>

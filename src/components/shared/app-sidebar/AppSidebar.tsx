@@ -1,3 +1,4 @@
+import { type ComponentPropsWithoutRef } from 'react';
 import { Store } from 'lucide-react';
 import {
   Sidebar,
@@ -13,16 +14,36 @@ import {
 } from '@/components/ui/sidebar';
 import { NavItem } from './components/NavItem';
 import { UserMenu } from './components/UserMenu';
-import { sidebarData } from './data/sidebar-data';
+import { sidebarData, type SidebarData } from './data/sidebar-data';
+import { cn } from '@/lib/utils';
 
-export const AppSidebar = () => {
+export type AppSidebarProps = Omit<
+  ComponentPropsWithoutRef<typeof Sidebar>,
+  'children'
+> & {
+  /** Data used to render the brand, user summary, and navigation groups. */
+  data?: SidebarData;
+};
+
+/**
+ * Primary application sidebar for the authenticated admin layout.
+ *
+ * The sidebar is data-driven so navigation can later be wired to permissions,
+ * remote menu config, or tenant-specific labels without rewriting the shell.
+ */
+export function AppSidebar({
+  data = sidebarData,
+  className,
+  ...props
+}: AppSidebarProps) {
   const { state } = useSidebar();
   const collapsed = state === 'collapsed';
 
   return (
     <Sidebar
       collapsible='icon'
-      className='border-r border-sidebar-border'
+      className={cn('border-r border-sidebar-border', className)}
+      {...props}
     >
       <SidebarHeader className='p-4'>
         <div className='flex items-center gap-3 overflow-hidden'>
@@ -32,10 +53,10 @@ export const AppSidebar = () => {
           {!collapsed && (
             <div className='min-w-0'>
               <p className='truncate text-base font-semibold tracking-tight'>
-                {sidebarData.brand.name}
+                {data.brand.name}
               </p>
               <p className='truncate text-xs text-muted-foreground'>
-                {sidebarData.brand.description}
+                {data.brand.description}
               </p>
             </div>
           )}
@@ -43,7 +64,7 @@ export const AppSidebar = () => {
       </SidebarHeader>
 
       <SidebarContent>
-        {sidebarData.groups.map((group) => (
+        {data.groups.map((group) => (
           <SidebarGroup key={group.label}>
             <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
             <SidebarGroupContent>
@@ -64,10 +85,10 @@ export const AppSidebar = () => {
       <SidebarFooter className='p-3'>
         <UserMenu
           collapsed={collapsed}
-          user={sidebarData.user}
+          user={data.user}
         />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
-};
+}

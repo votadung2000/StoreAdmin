@@ -1,4 +1,4 @@
-import { PageShell } from '@/components/shared/layout/PageShell';
+import { PageShell } from '@/components/shared/app-page-shell';
 import {
   Table,
   TableBody,

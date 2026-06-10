@@ -102,9 +102,10 @@ Added:
 
 Added:
 
-- `src/components/shared/auth/AppSocialAuth.tsx`
+- `src/components/shared/auth/index.ts`
+- `src/components/shared/auth/app-social-auth/AppSocialAuth.tsx`
 
-This re-exports the existing social auth component for compatibility with the shared structure shown in the IDE tabs.
+Auth components now export through the shared auth barrel while keeping each app component in its own folder.
 
 ## Preserved
 

@@ -3,12 +3,17 @@ import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import { type SidebarItem } from '../data/sidebar-data';
 
-type NavItemProps = {
+export type NavItemProps = {
+  /** Whether the parent sidebar is in icon-only mode. */
   collapsed: boolean;
+  /** Navigation item to render. */
   item: SidebarItem;
 };
 
-export const NavItem = ({ collapsed, item }: NavItemProps) => {
+/**
+ * Renders a single sidebar navigation link with active and collapsed states.
+ */
+export function NavItem({ collapsed, item }: NavItemProps) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -45,4 +50,4 @@ export const NavItem = ({ collapsed, item }: NavItemProps) => {
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
-};
+}
