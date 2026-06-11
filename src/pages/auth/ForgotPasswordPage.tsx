@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,17 +8,23 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { ROUTES } from '@/constants/routes';
 
 import {
-  forgotPasswordSchema,
+  createForgotPasswordSchema,
   type ForgotPasswordFormValues,
 } from '@/schemas/authSchema';
+import { useTranslation } from 'react-i18next';
 
 export const ForgotPasswordPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const forgotPasswordSchema = React.useMemo(
+    () => createForgotPasswordSchema(t),
+    [t],
+  );
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
   });
@@ -30,11 +37,10 @@ export const ForgotPasswordPage = () => {
     <>
       <div className='flex flex-col space-y-2 text-left mb-6'>
         <h1 className='text-4xl font-semibold tracking-tight'>
-          Forgot Password
+          {t('auth.forgotPassword.title')}
         </h1>
         <p className='text-base text-muted-foreground'>
-          Enter your email address and we will send you an OTP to reset your
-          password.
+          {t('auth.forgotPassword.description')}
         </p>
       </div>
 
@@ -44,11 +50,11 @@ export const ForgotPasswordPage = () => {
       >
         <div className='flex flex-col gap-2'>
           <label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
-            Email address
+            {t('field.emailAddress')}
           </label>
           <Input
             type='email'
-            placeholder='name@example.com'
+            placeholder={t('auth.emailPlaceholder')}
             className='h-12'
             {...register('email')}
           />
@@ -61,10 +67,10 @@ export const ForgotPasswordPage = () => {
 
         <Button
           type='submit'
-          disabled={isLoading}
+          disabled={isSubmitting}
           className='w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground flex justify-between items-center px-4 rounded-md uppercase text-sm font-bold tracking-wider transition-colors'
         >
-          <span>Send OTP</span>
+          <span>{t('actions.sendOtp')}</span>
           <ArrowRight className='h-4 w-4' />
         </Button>
 
@@ -74,7 +80,7 @@ export const ForgotPasswordPage = () => {
             className='inline-flex items-center text-sm text-muted-foreground hover:text-primary transition-colors'
           >
             <ArrowLeft className='mr-2 h-4 w-4' />
-            Back to Sign In
+            {t('actions.backToSignIn')}
           </Link>
         </div>
       </form>

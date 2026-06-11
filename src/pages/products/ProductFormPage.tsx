@@ -24,59 +24,68 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { PageShell } from '@/components/shared/app-page-shell';
+import { PageState } from '@/components/shared/app-page-state';
 import { ROUTES } from '@/constants/routes';
+import { useTranslation } from 'react-i18next';
 import { products } from '@/shared/demo/store-data';
 
-const productSchema = z
-  .object({
-    name: z.string().min(3, 'Name must be at least 3 characters'),
-    slug: z.string().min(3, 'Slug is required'),
-    sku: z.string().min(3, 'SKU is required'),
-    category: z.string().min(1, 'Category is required'),
-    audience: z.string().min(1, 'Audience is required'),
-    status: z.enum(['Draft', 'Active']),
-    price: z.number().positive('Price must be greater than zero'),
-    salePrice: z.number().min(0, 'Sale price cannot be negative'),
-    stock: z.number().min(0, 'Stock cannot be negative'),
-    seoTitle: z.string().min(5, 'SEO title is required'),
-    seoDescription: z.string().min(20, 'SEO description is required'),
-  })
-  .refine((value) => value.salePrice === 0 || value.salePrice < value.price, {
-    path: ['salePrice'],
-    message: 'Sale price must be lower than list price',
-  });
+type Translate = (key: string, params?: Record<string, string | number>) => string;
 
-type ProductFormValues = z.output<typeof productSchema>;
+const createProductSchema = (t: Translate) =>
+  z
+    .object({
+      name: z.string().min(3, t('validation.nameMin')),
+      slug: z.string().min(3, t('validation.slugMin')),
+      sku: z.string().min(3, t('validation.skuMin')),
+      category: z.string().min(1, t('validation.categoryRequired')),
+      audience: z.string().min(1, t('validation.audienceRequired')),
+      status: z.enum(['Draft', 'Active']),
+      price: z.number().positive(t('validation.pricePositive')),
+      salePrice: z.number().min(0, t('validation.salePriceMin')),
+      stock: z.number().min(0, t('validation.stockMin')),
+      seoTitle: z.string().min(5, t('validation.seoTitleMin')),
+      seoDescription: z.string().min(20, t('validation.seoDescriptionMin')),
+    })
+    .refine((value) => value.salePrice === 0 || value.salePrice < value.price, {
+      path: ['salePrice'],
+      message: t('validation.salePriceLower'),
+    });
+
+type ProductFormValues = z.output<ReturnType<typeof createProductSchema>>;
 
 type ProductFormPageProps = {
   mode: 'create' | 'edit';
 };
 
 export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
+  const { t } = useTranslation();
   const params = useParams({ strict: false }) as { productId?: string };
   const existingProduct =
-    products.find((item) => item.id === params.productId) ?? products[0];
+    mode === 'edit'
+      ? products.find((item) => item.id === params.productId)
+      : undefined;
   const [submitted, setSubmitted] = React.useState(false);
+  const productSchema = React.useMemo(() => createProductSchema(t), [t]);
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     mode: 'onChange',
     defaultValues: {
-      name: mode === 'edit' ? existingProduct.name : '',
+      name: existingProduct?.name ?? '',
       slug:
-        mode === 'edit'
+        existingProduct
           ? existingProduct.name.toLowerCase().replace(/\s+/g, '-')
           : '',
-      sku: mode === 'edit' ? existingProduct.sku : '',
-      category: mode === 'edit' ? existingProduct.category : '',
-      audience: mode === 'edit' ? existingProduct.audience : 'Unisex',
-      status: mode === 'edit' ? 'Active' : 'Draft',
-      price: mode === 'edit' ? existingProduct.price : 0,
+      sku: existingProduct?.sku ?? '',
+      category: existingProduct?.category ?? '',
+      audience: existingProduct?.audience ?? 'Unisex',
+      status: existingProduct?.status === 'Draft' ? 'Draft' : 'Active',
+      price: existingProduct?.price ?? 0,
       salePrice: 0,
-      stock: mode === 'edit' ? existingProduct.stock : 0,
-      seoTitle: mode === 'edit' ? existingProduct.name : '',
+      stock: existingProduct?.stock ?? 0,
+      seoTitle: existingProduct?.name ?? '',
       seoDescription:
-        mode === 'edit'
+        existingProduct
           ? `${existingProduct.name} for curated seasonal merchandising.`
           : '',
     },
@@ -85,7 +94,7 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
   const watchedValues = useWatch({ control: form.control });
   const completionItems = [
     {
-      label: 'Identity',
+      label: t('productForm.step.identity'),
       complete: Boolean(
         watchedValues.name &&
           watchedValues.slug &&
@@ -94,15 +103,15 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
       ),
     },
     {
-      label: 'Pricing',
+      label: t('productForm.step.pricing'),
       complete: Boolean((watchedValues.price ?? 0) > 0),
     },
     {
-      label: 'Inventory',
+      label: t('productForm.step.inventory'),
       complete: Boolean((watchedValues.stock ?? -1) >= 0),
     },
     {
-      label: 'SEO',
+      label: t('productForm.step.seo'),
       complete: Boolean(
         watchedValues.seoTitle && (watchedValues.seoDescription?.length ?? 0) >= 20,
       ),
@@ -113,20 +122,50 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
     setSubmitted(true);
   };
 
-  return (
-    <PageShell
-      title={mode === 'create' ? 'Create Product' : 'Edit Product'}
-      description='Build product identity, pricing, inventory, SEO, and publish state in one workflow.'
-      actions={
-        <div className='flex flex-wrap items-center gap-2'>
-          <Badge variant='info'>Validated draft</Badge>
+  if (mode === 'edit' && !existingProduct) {
+    return (
+      <PageShell
+        title={t('productDetail.notFoundTitle')}
+        description={t('productDetail.notFoundDescription')}
+        actions={
           <Button
             asChild
             variant='outline'
           >
             <Link to={ROUTES.MAIN.PRODUCTS}>
               <ArrowLeft />
-              Products
+              {t('actions.products')}
+            </Link>
+          </Button>
+        }
+      >
+        <PageState
+          variant='empty'
+          title={t('productDetail.notFoundTitle')}
+          description={t('productDetail.notFoundState')}
+        />
+      </PageShell>
+    );
+  }
+
+  return (
+    <PageShell
+      title={
+        mode === 'create'
+          ? t('route.createProduct.label')
+          : t('route.editProduct.label')
+      }
+      description={t('productForm.description')}
+      actions={
+        <div className='flex flex-wrap items-center gap-2'>
+          <Badge variant='info'>{t('productForm.status.validatedDraft')}</Badge>
+          <Button
+            asChild
+            variant='outline'
+          >
+            <Link to={ROUTES.MAIN.PRODUCTS}>
+              <ArrowLeft />
+              {t('actions.products')}
             </Link>
           </Button>
         </div>
@@ -135,9 +174,9 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
       {submitted && (
         <Alert className='border-emerald-200 bg-emerald-50 text-emerald-900 motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-top-1'>
           <CheckCircle2 className='h-4 w-4' />
-          <AlertTitle>Draft validated</AlertTitle>
+          <AlertTitle>{t('productForm.alert.title')}</AlertTitle>
           <AlertDescription>
-            This product draft is ready for operational review.
+            {t('productForm.alert.description')}
           </AlertDescription>
         </Alert>
       )}
@@ -150,7 +189,9 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
           >
             <span className='font-medium'>{item.label}</span>
             <Badge variant={item.complete ? 'success' : 'outline'}>
-              {item.complete ? 'Ready' : 'Open'}
+              {item.complete
+                ? t('status.generic.ready')
+                : t('status.generic.open')}
             </Badge>
           </div>
         ))}
@@ -164,9 +205,9 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
           <div className='space-y-4'>
             <Card className='transition-[box-shadow,border-color] duration-200 hover:border-primary/25 hover:shadow-md'>
               <CardHeader>
-                <CardTitle>Product Identity</CardTitle>
+                <CardTitle>{t('productForm.identity.title')}</CardTitle>
                 <CardDescription>
-                  Core catalog fields used by storefront and operations.
+                  {t('productForm.identity.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className='grid gap-4 md:grid-cols-2'>
@@ -175,10 +216,10 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   name='name'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t('field.name')}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder='Premium Canvas Tote'
+                          placeholder={t('placeholder.productName')}
                           {...field}
                         />
                       </FormControl>
@@ -191,10 +232,10 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   name='slug'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Slug</FormLabel>
+                      <FormLabel>{t('field.slug')}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder='premium-canvas-tote'
+                          placeholder={t('placeholder.productSlug')}
                           {...field}
                         />
                       </FormControl>
@@ -207,10 +248,10 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   name='sku'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Primary SKU</FormLabel>
+                      <FormLabel>{t('field.primarySku')}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder='BAG-001'
+                          placeholder={t('placeholder.productSku')}
                           {...field}
                         />
                       </FormControl>
@@ -223,13 +264,13 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   name='category'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category</FormLabel>
+                      <FormLabel>{t('field.category')}</FormLabel>
                       <FormControl>
                         <select
                           className='h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-1 focus-visible:ring-ring'
                           {...field}
                         >
-                          <option value=''>Select category</option>
+                          <option value=''>{t('placeholder.selectCategory')}</option>
                           <option value='Bags'>Bags</option>
                           <option value='Outerwear'>Outerwear</option>
                           <option value='Knitwear'>Knitwear</option>
@@ -245,9 +286,9 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
 
             <Card className='transition-[box-shadow,border-color] duration-200 hover:border-primary/25 hover:shadow-md'>
               <CardHeader>
-                <CardTitle>SEO Metadata</CardTitle>
+                <CardTitle>{t('productForm.seo.title')}</CardTitle>
                 <CardDescription>
-                  Search metadata and merchandising description.
+                  {t('productForm.seo.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className='grid gap-4'>
@@ -256,7 +297,7 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   name='seoTitle'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>SEO title</FormLabel>
+                      <FormLabel>{t('field.seoTitle')}</FormLabel>
                       <FormControl>
                         <Input
                           placeholder='Premium Canvas Tote'
@@ -272,11 +313,11 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   name='seoDescription'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>SEO description</FormLabel>
+                      <FormLabel>{t('field.seoDescription')}</FormLabel>
                       <FormControl>
                         <textarea
                           className='min-h-28 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring'
-                          placeholder='Describe the product for search and storefront previews.'
+                          placeholder={t('placeholder.seoDescription')}
                           {...field}
                         />
                       </FormControl>
@@ -291,9 +332,9 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
           <div className='space-y-4'>
             <Card className='transition-[box-shadow,border-color] duration-200 hover:border-primary/25 hover:shadow-md'>
               <CardHeader>
-                <CardTitle>Pricing and Inventory</CardTitle>
+                <CardTitle>{t('productForm.pricing.title')}</CardTitle>
                 <CardDescription>
-                  SKU pricing, sale guardrails, and stock availability.
+                  {t('productForm.pricing.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className='grid gap-4'>
@@ -303,7 +344,7 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                     name='price'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Price</FormLabel>
+                        <FormLabel>{t('field.price')}</FormLabel>
                         <FormControl>
                           <Input
                             type='number'
@@ -327,7 +368,7 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                     name='salePrice'
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Sale price</FormLabel>
+                        <FormLabel>{t('field.salePrice')}</FormLabel>
                         <FormControl>
                           <Input
                             type='number'
@@ -352,7 +393,7 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   name='stock'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>On-hand stock</FormLabel>
+                      <FormLabel>{t('field.onHandStock')}</FormLabel>
                       <FormControl>
                         <Input
                           type='number'
@@ -376,9 +417,9 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
 
             <Card className='transition-[box-shadow,border-color] duration-200 hover:border-primary/25 hover:shadow-md'>
               <CardHeader>
-                <CardTitle>Publishing</CardTitle>
+                <CardTitle>{t('productForm.publishing.title')}</CardTitle>
                 <CardDescription>
-                  Audience, status, and operational visibility.
+                  {t('productForm.publishing.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className='grid gap-4'>
@@ -387,15 +428,17 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   name='audience'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Audience</FormLabel>
+                      <FormLabel>{t('field.audience')}</FormLabel>
                       <FormControl>
                         <select
                           className='h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-1 focus-visible:ring-ring'
                           {...field}
                         >
-                          <option value='Women'>Women</option>
-                          <option value='Men'>Men</option>
-                          <option value='Unisex'>Unisex</option>
+                          <option value='Women'>{t('status.audience.women')}</option>
+                          <option value='Men'>{t('status.audience.men')}</option>
+                          <option value='Unisex'>
+                            {t('status.audience.unisex')}
+                          </option>
                         </select>
                       </FormControl>
                       <FormMessage />
@@ -407,14 +450,16 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   name='status'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Status</FormLabel>
+                      <FormLabel>{t('field.status')}</FormLabel>
                       <FormControl>
                         <select
                           className='h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-1 focus-visible:ring-ring'
                           {...field}
                         >
-                          <option value='Draft'>Draft</option>
-                          <option value='Active'>Active</option>
+                          <option value='Draft'>{t('status.product.draft')}</option>
+                          <option value='Active'>
+                            {t('status.product.active')}
+                          </option>
                         </select>
                       </FormControl>
                       <FormMessage />
@@ -427,7 +472,9 @@ export const ProductFormPage = ({ mode }: ProductFormPageProps) => {
                   className='w-full'
                 >
                   <Save />
-                  {mode === 'create' ? 'Create draft' : 'Save changes'}
+                  {mode === 'create'
+                    ? t('actions.createDraft')
+                    : t('actions.saveChanges')}
                 </Button>
               </CardContent>
             </Card>

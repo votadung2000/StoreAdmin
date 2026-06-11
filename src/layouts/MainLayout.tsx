@@ -16,13 +16,16 @@ import {
   canUsePermission,
   filterNavigationGroupsByPermissions,
   getRouteMeta,
-  searchNavigationItems,
+  navigationGroupTranslationKeys,
+  navigationItems,
 } from '@/constants/navigation';
 import { useAuthStore } from '@/stores/authStore';
 import {
   sidebarData,
   type SidebarData,
 } from '@/components/shared/app-sidebar/data/sidebar-data';
+import { AppLanguageSwitcher } from '@/components/shared/app-language-switcher';
+import { useTranslation } from 'react-i18next';
 
 function getInitials(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -37,6 +40,7 @@ export const MainLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
+  const { t } = useTranslation();
   const routeMeta = getRouteMeta(location.pathname);
   const permissions = user?.permissions ?? emptyPermissions;
   const canAccessRoute = canUsePermission(permissions, routeMeta?.permission);
@@ -46,14 +50,44 @@ export const MainLayout = () => {
   const sidebar = React.useMemo<SidebarData>(
     () => ({
       ...sidebarData,
-      groups: filterNavigationGroupsByPermissions(permissions),
+      brand: {
+        name: t('app.brand.name'),
+        description: t('app.brand.description'),
+      },
+      groups: filterNavigationGroupsByPermissions(permissions).map((group) => ({
+        label: t(group.labelKey),
+        items: group.items.map((item) => ({
+          ...item,
+          label: t(item.labelKey),
+        })),
+      })),
     }),
-    [permissions],
+    [permissions, t],
   );
 
   const searchResults = React.useMemo(() => {
-    return searchNavigationItems(query, permissions).slice(0, 6);
-  }, [permissions, query]);
+    const normalizedQuery = query.trim().toLocaleLowerCase();
+    const permittedItems = navigationItems
+      .filter((item) => canUsePermission(permissions, item.permission))
+      .map((item) => ({
+        ...item,
+        label: t(item.labelKey),
+        description: t(item.descriptionKey),
+        group: t(navigationGroupTranslationKeys[item.group]),
+      }));
+
+    if (!normalizedQuery) {
+      return permittedItems.slice(0, 6);
+    }
+
+    return permittedItems
+      .filter((item) => {
+        const haystack =
+          `${item.label} ${item.description} ${item.group} ${item.permission}`.toLocaleLowerCase();
+        return haystack.includes(normalizedQuery);
+      })
+      .slice(0, 6);
+  }, [permissions, query, t]);
 
   const runSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -76,10 +110,12 @@ export const MainLayout = () => {
           <div className='h-5 w-px bg-border' />
           <div className='min-w-0 flex-1'>
             <p className='truncate text-sm font-medium'>
-              {routeMeta?.label ?? 'Store Admin'}
+              {routeMeta ? t(routeMeta.labelKey) : t('app.defaultTitle')}
             </p>
             <p className='truncate text-xs text-muted-foreground'>
-              {routeMeta?.description ?? 'Commerce operations workspace'}
+              {routeMeta
+                ? t(routeMeta.descriptionKey)
+                : t('app.defaultDescription')}
             </p>
           </div>
 
@@ -95,9 +131,9 @@ export const MainLayout = () => {
               onBlur={() => {
                 window.setTimeout(() => setIsSearchFocused(false), 120);
               }}
-              placeholder='Search operations'
+              placeholder={t('layout.search.placeholder')}
               className='h-9 pl-9 pr-3'
-              aria-label='Search operations'
+              aria-label={t('layout.search.placeholder')}
             />
             {isSearchFocused && (
               <div className='absolute right-0 top-11 z-40 w-full overflow-hidden rounded-md border bg-popover shadow-lg motion-safe:animate-in motion-safe:fade-in-0 motion-safe:zoom-in-95'>
@@ -125,17 +161,18 @@ export const MainLayout = () => {
                   ))
                 ) : (
                   <div className='px-3 py-4 text-sm text-muted-foreground'>
-                    No matching workspace area
+                    {t('layout.search.noMatch')}
                   </div>
                 )}
               </div>
             )}
           </form>
 
+          <AppLanguageSwitcher className='hidden sm:inline-flex' />
           <Button
             variant='ghost'
             size='icon'
-            aria-label='Notifications'
+            aria-label={t('layout.notifications')}
             className='relative'
           >
             <Bell size={18} />
@@ -144,19 +181,19 @@ export const MainLayout = () => {
           <Button
             variant='ghost'
             className='h-10 gap-2 px-2'
-            aria-label='Profile'
+            aria-label={t('layout.profile')}
           >
             <Avatar className='h-8 w-8 rounded-lg'>
               <AvatarFallback className='rounded-lg text-xs'>
-                {getInitials(user?.name ?? 'Store Owner')}
+                {getInitials(user?.name ?? t('app.user.fallbackName'))}
               </AvatarFallback>
             </Avatar>
             <div className='hidden text-left leading-tight lg:block'>
               <p className='text-sm font-medium'>
-                {user?.name ?? 'Store Owner'}
+                {user?.name ?? t('app.user.fallbackName')}
               </p>
               <p className='text-xs text-muted-foreground'>
-                {user?.roles[0] ?? 'Admin'}
+                {user?.roles[0] ?? t('app.user.fallbackRole')}
               </p>
             </div>
           </Button>
@@ -169,8 +206,10 @@ export const MainLayout = () => {
             <section className='mx-auto w-full max-w-4xl p-6'>
               <PageState
                 variant='forbidden'
-                title='You do not have access to this workspace area'
-                description={`Required permission: ${routeMeta?.permission ?? 'unknown'}`}
+                title={t('layout.forbidden.title')}
+                description={t('layout.forbidden.description', {
+                  permission: routeMeta?.permission ?? 'unknown',
+                })}
               />
             </section>
           )}

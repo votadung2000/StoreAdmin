@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 export type AppPasswordInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -30,9 +31,13 @@ export function AppPasswordInput({
   ...props
 }: AppPasswordInputProps) {
   const [showPassword, setShowPassword] = React.useState(false);
+  const { t } = useTranslation();
   const togglePasswordVisibility = React.useCallback(() => {
     setShowPassword((prev) => !prev);
   }, []);
+  const visibilityLabel = showPassword
+    ? t('auth.visibility.hidePassword')
+    : t('auth.visibility.showPassword');
 
   return (
     <div className={cn('relative rounded-md', classNameContainer)}>
@@ -53,13 +58,11 @@ export function AppPasswordInput({
         disabled={disabled}
         className='absolute inset-e-1 top-1/2 h-6 w-6 -translate-y-1/2 rounded-md text-muted-foreground'
         onClick={togglePasswordVisibility}
-        aria-label={showPassword ? 'Hide password' : 'Show password'}
+        aria-label={visibilityLabel}
         aria-pressed={showPassword}
       >
         {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
-        <span className='sr-only'>
-          {showPassword ? 'Hide password' : 'Show password'}
-        </span>
+        <span className='sr-only'>{visibilityLabel}</span>
       </Button>
     </div>
   );

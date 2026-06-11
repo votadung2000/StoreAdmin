@@ -19,6 +19,7 @@ import { sidebarData, type SidebarData } from './data/sidebar-data';
 import { cn } from '@/lib/utils';
 import { ROUTES } from '@/constants/routes';
 import { useAuthStore } from '@/stores/authStore';
+import { useTranslation } from 'react-i18next';
 
 export type AppSidebarProps = Omit<
   ComponentPropsWithoutRef<typeof Sidebar>,
@@ -41,6 +42,7 @@ export function AppSidebar({
 }: AppSidebarProps) {
   const logout = useAuthStore((s) => s.logout);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -102,12 +104,12 @@ export function AppSidebar({
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleLogout}
-              aria-label='Logout'
-              tooltip='Logout'
+              aria-label={t('actions.logout')}
+              tooltip={t('actions.logout')}
               className='text-destructive hover:bg-destructive/10 hover:text-destructive focus-visible:ring-destructive/30'
             >
               <LogOut />
-              <span>Logout</span>
+              <span>{t('actions.logout')}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

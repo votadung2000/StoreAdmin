@@ -1,0 +1,676 @@
+{
+  "language": {
+    "label": "Language",
+    "english": {
+      "short": "EN",
+      "name": "English"
+    },
+    "vietnamese": {
+      "short": "VI",
+      "name": "Vietnamese"
+    }
+  },
+  "app": {
+    "brand": {
+      "name": "Store Admin",
+      "description": "Commerce Console"
+    },
+    "defaultTitle": "Store Admin",
+    "defaultDescription": "Commerce operations workspace",
+    "user": {
+      "fallbackName": "Store Owner",
+      "fallbackRole": "Admin"
+    }
+  },
+  "actions": {
+    "addCategory": "Add category",
+    "addProduct": "Add product",
+    "archive": "Archive",
+    "backToSignIn": "Back to Sign In",
+    "createDraft": "Create draft",
+    "edit": "Edit",
+    "export": "Export",
+    "import": "Import",
+    "logout": "Logout",
+    "markPacked": "Mark packed",
+    "previewNavigation": "Preview navigation",
+    "print": "Print {count}",
+    "printSlips": "Print slips",
+    "products": "Products",
+    "refresh": "Refresh",
+    "resendCode": "Resend Code",
+    "saveChanges": "Save changes",
+    "saveOrder": "Save order",
+    "sendOtp": "Send OTP",
+    "signIn": "SIGN IN",
+    "signUp": "SIGN UP",
+    "verifyAndSignIn": "Verify & Sign In"
+  },
+  "field": {
+    "audience": "Audience",
+    "category": "Category",
+    "confirmPassword": "Confirm Password",
+    "email": "Email",
+    "emailAddress": "Email address",
+    "name": "Name",
+    "onHandStock": "On-hand stock",
+    "password": "Password",
+    "price": "Price",
+    "primarySku": "Primary SKU",
+    "salePrice": "Sale price",
+    "seoDescription": "SEO description",
+    "seoTitle": "SEO title",
+    "sku": "SKU",
+    "slug": "Slug",
+    "status": "Status"
+  },
+  "validation": {
+    "audienceRequired": "Audience is required",
+    "categoryRequired": "Category is required",
+    "confirmPasswordRequired": "Please confirm your password",
+    "emailInvalid": "Email is invalid",
+    "nameMin": "Name must be at least 3 characters",
+    "otpLength": "OTP must be 6 digits",
+    "passwordMin": "Password must be at least 6 characters long",
+    "passwordsDoNotMatch": "Passwords don't match",
+    "pricePositive": "Price must be greater than zero",
+    "salePriceLower": "Sale price must be lower than list price",
+    "salePriceMin": "Sale price cannot be negative",
+    "seoDescriptionMin": "SEO description is required",
+    "seoTitleMin": "SEO title is required",
+    "skuMin": "SKU is required",
+    "slugMin": "Slug is required",
+    "stockMin": "Stock cannot be negative"
+  },
+  "placeholder": {
+    "productName": "Premium Canvas Tote",
+    "productSlug": "premium-canvas-tote",
+    "productSku": "BAG-001",
+    "selectCategory": "Select category",
+    "seoDescription": "Describe the product for search and storefront previews."
+  },
+  "layout": {
+    "forbidden": {
+      "description": "Required permission: {permission}",
+      "title": "You do not have access to this workspace area"
+    },
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "search": {
+      "noMatch": "No matching workspace area",
+      "placeholder": "Search operations"
+    }
+  },
+  "loading": {
+    "authDescription": "Preparing your sign-in flow.",
+    "sessionDescription": "Preparing the admin workspace.",
+    "sessionTitle": "Checking session"
+  },
+  "notFound": {
+    "action": "Dashboard",
+    "description": "The requested admin workspace route does not exist.",
+    "title": "Page not found"
+  },
+  "table": {
+    "all": "All",
+    "clearSearch": "Clear search",
+    "clearSearchFilter": "Clear search filter",
+    "couldNotLoadRecords": "Could not load records",
+    "filteredEmptyDescription": "Adjust search or filters to broaden the result set.",
+    "filteredEmptyTitle": "No matching records",
+    "nextPage": "Next page",
+    "page": "Page {page} of {total}",
+    "previousPage": "Previous page",
+    "records": "records",
+    "reset": "Reset",
+    "retry": "Retry",
+    "rows": "Rows",
+    "searchPrefix": "Search: {query}",
+    "selected": "{count} selected",
+    "showing": "Showing {visible} of {total} records",
+    "showingFiltered": "Showing {visible} of {total} records from {all}"
+  },
+  "auth": {
+    "emailPlaceholder": "name@example.com",
+    "forgotPassword": {
+      "description": "Enter your email address and we will send you an OTP to reset your password.",
+      "title": "Forgot Password"
+    },
+    "legal": {
+      "and": "and",
+      "prefix": "By clicking {action}, you agree to our website",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "otp": {
+      "description": "Please enter the authentication code sent to your email address.",
+      "didNotReceive": "Didn't receive the code?",
+      "title": "Two-factor Authentication"
+    },
+    "passwordPlaceholder": "Password",
+    "signIn": {
+      "description": "Enter your email and password below to log into your account.",
+      "noAccount": "Don't have an account?",
+      "title": "Sign in"
+    },
+    "signUp": {
+      "alreadyHaveAccount": "Already have an account?",
+      "description": "Enter your email and password below to create your account.",
+      "title": "Sign up"
+    },
+    "social": {
+      "continueWith": "Continue with {provider}",
+      "divider": "Or continue with"
+    },
+    "visibility": {
+      "hidePassword": "Hide password",
+      "showPassword": "Show password"
+    }
+  },
+  "nav": {
+    "group": {
+      "commerce": "Commerce",
+      "operations": "Operations",
+      "system": "System"
+    },
+    "dashboard": {
+      "description": "Sales, fulfillment, inventory, and customer overview.",
+      "label": "Dashboard"
+    },
+    "products": {
+      "description": "Catalog, variants, SKU pricing, and publishing status.",
+      "label": "Products"
+    },
+    "categories": {
+      "description": "Category tree, merchandising, storefront visibility, and SEO.",
+      "label": "Categories"
+    },
+    "orders": {
+      "description": "Payments, packing, fulfillment, and customer communication.",
+      "label": "Orders"
+    },
+    "inventory": {
+      "description": "Availability, reservations, movements, and low-stock risk.",
+      "label": "Inventory"
+    },
+    "returns": {
+      "description": "Refund requests, exchange approvals, and return intake.",
+      "label": "Returns"
+    },
+    "customers": {
+      "description": "Customer profiles, order history, support tags, and segments.",
+      "label": "Customers"
+    },
+    "promotions": {
+      "description": "Coupons, campaigns, discount rules, and usage limits.",
+      "label": "Promotions"
+    },
+    "shipping": {
+      "description": "Shipping providers, zones, rates, and fulfillment rules.",
+      "label": "Shipping"
+    },
+    "reports": {
+      "description": "Revenue, product, inventory, order, and customer reporting.",
+      "label": "Reports"
+    },
+    "staff": {
+      "description": "Team members, invitations, roles, and access status.",
+      "label": "Staff"
+    },
+    "roles": {
+      "description": "Permission groups, assignment rules, and RBAC coverage.",
+      "label": "Roles"
+    },
+    "settings": {
+      "description": "Store profile, payment, tax, localization, and policy defaults.",
+      "label": "Settings"
+    },
+    "auditLogs": {
+      "description": "Sensitive changes, user activity, request IDs, and exports.",
+      "label": "Audit Logs"
+    },
+    "stockMovements": {
+      "description": "Adjustments, transfers, reservations, and audit trail.",
+      "label": "Stock Movements"
+    }
+  },
+  "route": {
+    "createProduct": {
+      "description": "Build product identity, pricing, inventory, and SEO.",
+      "label": "Create Product"
+    },
+    "editProduct": {
+      "description": "Update product identity, pricing, inventory, and SEO.",
+      "label": "Edit Product"
+    },
+    "productDetail": {
+      "description": "SKU, inventory, activity, and publication context.",
+      "label": "Product Detail"
+    },
+    "orderDetail": {
+      "description": "Payment, fulfillment, timeline, and customer service context.",
+      "label": "Order Detail"
+    },
+    "customerDetail": {
+      "description": "Profile, loyalty, service notes, and order history.",
+      "label": "Customer Detail"
+    }
+  },
+  "status": {
+    "audience": {
+      "men": "Men",
+      "unisex": "Unisex",
+      "women": "Women"
+    },
+    "category": {
+      "draft": "Draft",
+      "hidden": "Hidden",
+      "visible": "Visible"
+    },
+    "fulfillment": {
+      "awaitingPayment": "Awaiting payment",
+      "delayed": "Delayed",
+      "packed": "Packed",
+      "readyToPack": "Ready to pack",
+      "shipped": "Shipped"
+    },
+    "generic": {
+      "clear": "Clear",
+      "approved": "Approved",
+      "critical": "Critical",
+      "healthy": "Healthy",
+      "info": "Info",
+      "inTransit": "In transit",
+      "invited": "Invited",
+      "limited": "Limited",
+      "missed": "Missed",
+      "needed": "Needed",
+      "needsReview": "Needs review",
+      "onTrack": "On track",
+      "open": "Open",
+      "optional": "Optional",
+      "posted": "Posted",
+      "ready": "Ready",
+      "required": "Required",
+      "review": "Review",
+      "scheduled": "Scheduled"
+    },
+    "orderPriority": {
+      "high": "High",
+      "normal": "Normal"
+    },
+    "payment": {
+      "failed": "Failed",
+      "paid": "Paid",
+      "pending": "Pending",
+      "refunded": "Refunded"
+    },
+    "product": {
+      "active": "Active",
+      "archived": "Archived",
+      "draft": "Draft",
+      "lowStock": "Low stock"
+    },
+    "storefront": {
+      "hidden": "Hidden",
+      "visible": "Visible"
+    }
+  },
+  "time": {
+    "12MinAgo": "12 min ago",
+    "18MinAgo": "18 min ago",
+    "1hAgo": "1h ago",
+    "2dAgo": "2d ago",
+    "2hAgo": "2h ago",
+    "36MinAgo": "36 min ago",
+    "4dAgo": "4d ago",
+    "48MinAgo": "48 min ago",
+    "5hAgo": "5h ago",
+    "yesterday": "Yesterday"
+  },
+  "dashboard": {
+    "dateRange": {
+      "30d": "Last 30 days",
+      "7d": "Last 7 days",
+      "ariaLabel": "Dashboard date range",
+      "today": "Today"
+    },
+    "description": "Sales, fulfillment, inventory, and customer health for today.",
+    "focus": {
+      "approveRefunds": {
+        "badge": "Finance",
+        "detail": "6 refund requests are waiting for account review.",
+        "title": "Approve refunds"
+      },
+      "packOrders": {
+        "badge": "Next 2h",
+        "detail": "12 paid orders are inside the next fulfillment window.",
+        "title": "Pack priority orders"
+      },
+      "reviewStock": {
+        "badge": "Critical",
+        "detail": "9 SKUs have low available stock after reservations.",
+        "title": "Review stock risk"
+      }
+    },
+    "inventoryAlerts": {
+      "description": "SKUs with constrained available stock.",
+      "onHand": "{count} on hand",
+      "reserved": "{count} reserved",
+      "title": "Inventory Alerts"
+    },
+    "metric": {
+      "lowStockSkus": {
+        "comparison": "9 need reorder today",
+        "label": "Low-stock SKUs"
+      },
+      "ordersToday": {
+        "comparison": "+11.7% vs last Wednesday",
+        "label": "Orders today"
+      },
+      "pendingOrders": {
+        "comparison": "12 past SLA",
+        "label": "Pending orders"
+      },
+      "revenueToday": {
+        "comparison": "+18.2% vs yesterday",
+        "label": "Revenue today"
+      }
+    },
+    "orderFlow": {
+      "description": "Current fulfillment pressure by operational stage.",
+      "orders": "{count} orders",
+      "packing": "Packing",
+      "refunds": "Refunds",
+      "title": "Order Flow"
+    },
+    "recentActivity": {
+      "bulkPrice": {
+        "detail": "38 SKUs updated by Store Owner",
+        "title": "Bulk price update completed"
+      },
+      "description": "Audit-worthy changes across catalog and operations.",
+      "lowStock": {
+        "detail": "Ribbed Knit Jacket has 5 available units",
+        "title": "Low-stock threshold reached"
+      },
+      "promotion": {
+        "detail": "Weekend edit campaign is active",
+        "title": "Promotion published"
+      },
+      "refund": {
+        "detail": "Order ST-1041 requested store-credit refund",
+        "title": "Refund request opened"
+      },
+      "title": "Recent Activity"
+    },
+    "revenueTrend": {
+      "description": "Daily revenue across online and retail channels.",
+      "title": "Revenue Trend"
+    },
+    "title": "Dashboard"
+  },
+  "products": {
+    "bulk": {
+      "publish": "Publish {count}"
+    },
+    "description": "Manage catalog items, SKU availability, merchandising status, and sales channels.",
+    "emptyDescription": "Products appear here after catalog import or product creation.",
+    "emptyTitle": "No products yet",
+    "searchPlaceholder": "Search products, SKU, category",
+    "summary": {
+      "drafts": {
+        "detail": "Waiting for publish",
+        "label": "Drafts"
+      },
+      "inventoryValue": {
+        "detail": "On-hand estimate",
+        "label": "Inventory value"
+      },
+      "needsStock": {
+        "detail": "Reorder candidates",
+        "label": "Needs stock"
+      },
+      "published": {
+        "detail": "Live products",
+        "label": "Published"
+      }
+    },
+    "title": "Products",
+    "viewProduct": "View {name}",
+    "editProduct": "Edit {name}",
+    "selectAll": "Select all products",
+    "selectProduct": "Select {name}",
+    "table": {
+      "available": "Available",
+      "channel": "Channel",
+      "price": "Price",
+      "product": "Product",
+      "updated": "Updated",
+      "reserved": "{count} reserved"
+    }
+  },
+  "productDetail": {
+    "auditDescription": "Archive, publish, and price changes require explicit operator action.",
+    "auditTitle": "Audit readiness",
+    "availableStock": "Available stock",
+    "catalogDescription": "Product identity, publishing state, and merchandising context.",
+    "catalogTitle": "Catalog Summary",
+    "inventoryDescription": "Available stock follows on-hand minus reserved units.",
+    "inventoryTitle": "Inventory Ledger",
+    "lastUpdate": "Last update",
+    "notFoundDescription": "The requested product is not available.",
+    "notFoundState": "Check the product ID or return to the product list.",
+    "notFoundTitle": "Product not found",
+    "onHand": "On hand",
+    "reserved": "Reserved",
+    "seoDescription": "Title, slug, description, and search preview are ready for validation.",
+    "seoTitle": "SEO metadata",
+    "variantDescription": "SKU uniqueness, attributes, and price constraints are enforced in form state.",
+    "variantTitle": "Variant rules"
+  },
+  "productForm": {
+    "alert": {
+      "description": "This product draft is ready for operational review.",
+      "title": "Draft validated"
+    },
+    "description": "Build product identity, pricing, inventory, SEO, and publish state in one workflow.",
+    "identity": {
+      "description": "Core catalog fields used by storefront and operations.",
+      "title": "Product Identity"
+    },
+    "pricing": {
+      "description": "SKU pricing, sale guardrails, and stock availability.",
+      "title": "Pricing and Inventory"
+    },
+    "publishing": {
+      "description": "Audience, status, and operational visibility.",
+      "title": "Publishing"
+    },
+    "seo": {
+      "description": "Search metadata and merchandising description.",
+      "title": "SEO Metadata"
+    },
+    "status": {
+      "validatedDraft": "Validated draft"
+    },
+    "step": {
+      "identity": "Identity",
+      "inventory": "Inventory",
+      "pricing": "Pricing",
+      "seo": "SEO"
+    }
+  },
+  "categories": {
+    "description": "Organize products by category hierarchy, merchandising priority, storefront visibility, and SEO readiness.",
+    "emptyDescription": "Categories appear here after merchandising setup.",
+    "emptyTitle": "No categories yet",
+    "searchPlaceholder": "Search categories, slug, parent",
+    "selectAll": "Select all categories",
+    "selectCategory": "Select {name}",
+    "summary": {
+      "averageSeo": {
+        "detail": "Readiness score",
+        "label": "Average SEO"
+      },
+      "categoryRevenue": {
+        "detail": "30-day total",
+        "label": "Category revenue"
+      },
+      "hiddenOrDraft": {
+        "detail": "Needs review",
+        "label": "Hidden or draft"
+      },
+      "visible": {
+        "detail": "Storefront areas",
+        "label": "Visible"
+      }
+    },
+    "table": {
+      "parent": "Parent",
+      "products": "Products",
+      "revenue": "Revenue",
+      "root": "Root",
+      "seo": "SEO",
+      "sort": "Sort"
+    },
+    "title": "Categories",
+    "tree": {
+      "description": "Root and child categories ordered for storefront navigation.",
+      "itemMeta": "{count} products / order {order}",
+      "title": "Category Tree"
+    },
+    "detail": {
+      "description": "Merchandising summary and operational checks.",
+      "revenue30d": "30-day revenue",
+      "seoScore": "SEO score",
+      "storefrontHidden": "Hidden from storefront navigation",
+      "storefrontTitle": "Storefront visibility",
+      "storefrontVisible": "Visible in storefront navigation"
+    }
+  },
+  "orders": {
+    "bulk": {
+      "print": "Print {count}"
+    },
+    "description": "Track payment health, packing workload, fulfillment status, and support exceptions.",
+    "emptyDescription": "New orders will appear here once checkout is connected.",
+    "emptyTitle": "No orders yet",
+    "searchPlaceholder": "Search orders, customer, email",
+    "selectAll": "Select all orders",
+    "selectOrder": "Select order {id}",
+    "summary": {
+      "exceptions": {
+        "detail": "Needs review",
+        "label": "Exceptions"
+      },
+      "packingQueue": {
+        "detail": "Warehouse action",
+        "label": "Packing queue"
+      },
+      "paidRevenue": {
+        "detail": "Ready to fulfill",
+        "label": "Paid revenue"
+      },
+      "pendingPayment": {
+        "detail": "Follow-up list",
+        "label": "Pending payment"
+      }
+    },
+    "table": {
+      "customer": "Customer",
+      "fulfillment": "Fulfillment",
+      "order": "Order",
+      "payment": "Payment",
+      "placed": "Placed",
+      "priority": "Priority",
+      "total": "Total"
+    },
+    "title": "Orders",
+    "viewOrder": "View order {id}"
+  },
+  "orderDetail": {
+    "carrierHandoff": {
+      "detail": {
+        "shipped": "Tracking available",
+        "waiting": "Waiting for shipment"
+      },
+      "title": "Carrier handoff"
+    },
+    "customerContact": "Customer contact",
+    "description": "{customer} / {items} items / {placedAt}",
+    "fraudReview": "Fraud review",
+    "fulfillment": {
+      "description": "Warehouse execution state.",
+      "title": "Fulfillment"
+    },
+    "notFoundDescription": "The requested order is not available.",
+    "notFoundState": "Check the order ID or return to the order list.",
+    "notFoundTitle": "Order not found",
+    "packingSla": "Packing SLA",
+    "paymentAuthorized": {
+      "title": "Payment authorized"
+    },
+    "payment": {
+      "title": "Payment"
+    },
+    "priority": {
+      "description": "Service and SLA handling.",
+      "title": "Priority"
+    },
+    "timeline": {
+      "description": "Payment, packing, handoff, and carrier events.",
+      "title": "Timeline"
+    },
+    "warehouseQueue": {
+      "title": "Warehouse queue"
+    }
+  },
+  "module": {
+    "common": {
+      "bulkExport": "Export {count}",
+      "emptyDescription": "Records appear here after the backend API is connected.",
+      "emptyTitle": "No {title} records",
+      "governance": {
+        "description": "Ownership, approvals, exports, and audit coverage.",
+        "exportCadence": "Export cadence",
+        "ownerApproval": "Owner approval",
+        "reviewWindow": "Review window",
+        "sensitiveChanges": "Sensitive changes",
+        "title": "Governance"
+      },
+      "operationalQueue": {
+        "description": "Prioritized items that need review or follow-up.",
+        "title": "Operational Queue"
+      },
+      "searchPlaceholder": "Search {title}",
+      "selectAll": "Select all {title} records",
+      "workflow": {
+        "apply": "Apply",
+        "audit": "Audit",
+        "description": "A lightweight production path for action, review, and audit follow-up.",
+        "review": "Review",
+        "title": "Workflow State"
+      }
+    },
+    "primaryAction": {
+      "auditLogs": "Export logs",
+      "customers": "Add customer",
+      "inventory": "Adjust stock",
+      "inventoryMovements": "New movement",
+      "promotions": "Create campaign",
+      "reports": "Build report",
+      "returns": "Create return",
+      "roles": "Create role",
+      "settings": "Update settings",
+      "shipping": "Add rate",
+      "staff": "Invite staff"
+    },
+    "table": {
+      "metric": "Metric",
+      "name": "Name",
+      "owner": "Owner",
+      "updated": "Updated"
+    }
+  }
+}

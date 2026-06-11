@@ -1,7 +1,11 @@
+import * as React from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signUpSchema, type SignUpFormValues } from '@/schemas/authSchema';
+import {
+  createSignUpSchema,
+  type SignUpFormValues,
+} from '@/schemas/authSchema';
 import { useAuthStore } from '@/stores/authStore';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -17,10 +21,15 @@ import {
 import { AppPasswordInput } from '@/components/shared/app-password-input';
 import { AppSocialAuth } from '@/components/shared/app-social-auth';
 import { ROUTES } from '@/constants/routes';
+import { useTranslation } from 'react-i18next';
 
 export const SignUpPage = () => {
-  const signIn = useAuthStore((state) => state.signIn);
+  const signInWithDemoSession = useAuthStore(
+    (state) => state.signInWithDemoSession,
+  );
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const signUpSchema = React.useMemo(() => createSignUpSchema(t), [t]);
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
@@ -35,22 +44,24 @@ export const SignUpPage = () => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = () => {
-    signIn('mock-jwt-token');
+    signInWithDemoSession();
     navigate({ to: ROUTES.MAIN.DASHBOARD });
   };
 
   return (
     <>
       <div className='flex flex-col space-y-2 text-left mb-6'>
-        <h1 className='text-4xl font-semibold tracking-tight'>Sign up</h1>
+        <h1 className='text-4xl font-semibold tracking-tight'>
+          {t('auth.signUp.title')}
+        </h1>
         <p className='text-base text-muted-foreground'>
-          Enter your email and password below to create your account. <br />
-          Already have an account?{' '}
+          {t('auth.signUp.description')} <br />
+          {t('auth.signUp.alreadyHaveAccount')}{' '}
           <Link
             to={ROUTES.AUTH.SIGN_IN}
             className='text-muted-foreground underline underline-offset-4 hover:text-primary transition-colors'
           >
-            Sign In
+            {t('auth.signIn.title')}
           </Link>
         </p>
       </div>
@@ -65,11 +76,11 @@ export const SignUpPage = () => {
             name='email'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('field.email')}</FormLabel>
                 <FormControl>
                   <Input
                     type='email'
-                    placeholder='name@example.com'
+                    placeholder={t('auth.emailPlaceholder')}
                     className='h-12'
                     {...field}
                   />
@@ -84,10 +95,10 @@ export const SignUpPage = () => {
             name='password'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t('field.password')}</FormLabel>
                 <FormControl>
                   <AppPasswordInput
-                    placeholder='••••••••'
+                    placeholder={t('auth.passwordPlaceholder')}
                     classNameInput='h-12'
                     {...field}
                   />
@@ -102,10 +113,10 @@ export const SignUpPage = () => {
             name='confirmPassword'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel>{t('field.confirmPassword')}</FormLabel>
                 <FormControl>
                   <AppPasswordInput
-                    placeholder='••••••••'
+                    placeholder={t('auth.passwordPlaceholder')}
                     classNameInput='h-12'
                     {...field}
                   />
@@ -124,7 +135,7 @@ export const SignUpPage = () => {
               <Loader2 className='h-4 w-4 animate-spin mx-auto' />
             ) : (
               <>
-                <span>SIGN UP</span>
+                <span>{t('actions.signUp')}</span>
                 <ArrowRight className='h-4 w-4' />
               </>
             )}
@@ -134,20 +145,14 @@ export const SignUpPage = () => {
 
           <div className='pt-2'>
             <p className='text-sm text-muted-foreground leading-relaxed'>
-              By clicking Sign Up, you agree to our website{' '}
-              <a
-                href='#'
-                className='underline underline-offset-4 hover:text-primary transition-colors'
-              >
-                Terms of Service
-              </a>{' '}
-              and{' '}
-              <a
-                href='#'
-                className='underline underline-offset-4 hover:text-primary transition-colors'
-              >
-                Privacy Policy
-              </a>
+              {t('auth.legal.prefix', { action: t('auth.signUp.title') })}{' '}
+              <span className='font-medium text-foreground'>
+                {t('auth.legal.terms')}
+              </span>{' '}
+              {t('auth.legal.and')}{' '}
+              <span className='font-medium text-foreground'>
+                {t('auth.legal.privacy')}
+              </span>
               .
             </p>
           </div>

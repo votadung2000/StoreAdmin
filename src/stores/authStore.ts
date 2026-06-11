@@ -35,12 +35,17 @@ export const defaultAuthUser: AuthUser = {
   permissions: ownerPermissions,
 };
 
+function createDemoSessionToken() {
+  return `store-admin-demo-${Date.now()}`;
+}
+
 export type AuthState = {
   isAuthenticated: boolean;
   token: string | null;
   user: AuthUser | null;
   isLoading: boolean;
   signIn: (token: string, user?: AuthUser) => void;
+  signInWithDemoSession: () => void;
   logout: () => void;
 };
 
@@ -53,6 +58,13 @@ export const useAuthStore = create<AuthState>()(
       isLoading: false,
       signIn: (token: string, user = defaultAuthUser) =>
         set({ isAuthenticated: true, token, user, isLoading: false }),
+      signInWithDemoSession: () =>
+        set({
+          isAuthenticated: true,
+          token: createDemoSessionToken(),
+          user: defaultAuthUser,
+          isLoading: false,
+        }),
       logout: () =>
         set({
           isAuthenticated: false,

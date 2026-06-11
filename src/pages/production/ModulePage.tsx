@@ -13,6 +13,8 @@ import {
 } from '@/components/ui/card';
 import { PageShell } from '@/components/shared/app-page-shell';
 import { ProductionDataTable } from '@/components/shared/app-data-table';
+import { getValueTranslationKey } from '@/constants/translation';
+import { useTranslation } from 'react-i18next';
 import {
   getStatusVariant,
   moduleConfigs,
@@ -24,15 +26,90 @@ export type ModulePageProps = {
   moduleId: ModuleId;
 };
 
+const moduleCopyKeys: Record<
+  ModuleId,
+  {
+    title: string;
+    description: string;
+    primaryAction: string;
+  }
+> = {
+  inventory: {
+    title: 'nav.inventory.label',
+    description: 'nav.inventory.description',
+    primaryAction: 'module.primaryAction.inventory',
+  },
+  'inventory-movements': {
+    title: 'nav.stockMovements.label',
+    description: 'nav.stockMovements.description',
+    primaryAction: 'module.primaryAction.inventoryMovements',
+  },
+  returns: {
+    title: 'nav.returns.label',
+    description: 'nav.returns.description',
+    primaryAction: 'module.primaryAction.returns',
+  },
+  customers: {
+    title: 'nav.customers.label',
+    description: 'nav.customers.description',
+    primaryAction: 'module.primaryAction.customers',
+  },
+  promotions: {
+    title: 'nav.promotions.label',
+    description: 'nav.promotions.description',
+    primaryAction: 'module.primaryAction.promotions',
+  },
+  shipping: {
+    title: 'nav.shipping.label',
+    description: 'nav.shipping.description',
+    primaryAction: 'module.primaryAction.shipping',
+  },
+  reports: {
+    title: 'nav.reports.label',
+    description: 'nav.reports.description',
+    primaryAction: 'module.primaryAction.reports',
+  },
+  staff: {
+    title: 'nav.staff.label',
+    description: 'nav.staff.description',
+    primaryAction: 'module.primaryAction.staff',
+  },
+  roles: {
+    title: 'nav.roles.label',
+    description: 'nav.roles.description',
+    primaryAction: 'module.primaryAction.roles',
+  },
+  settings: {
+    title: 'nav.settings.label',
+    description: 'nav.settings.description',
+    primaryAction: 'module.primaryAction.settings',
+  },
+  'audit-logs': {
+    title: 'nav.auditLogs.label',
+    description: 'nav.auditLogs.description',
+    primaryAction: 'module.primaryAction.auditLogs',
+  },
+};
+
 export const ModulePage = ({ moduleId }: ModulePageProps) => {
+  const { t } = useTranslation();
   const config = moduleConfigs[moduleId];
-  const workflowSteps = ['Review', 'Apply', 'Audit'];
+  const copy = moduleCopyKeys[moduleId];
+  const translatedTitle = t(copy.title);
+  const workflowSteps = [
+    t('module.common.workflow.review'),
+    t('module.common.workflow.apply'),
+    t('module.common.workflow.audit'),
+  ];
   const statusOptions = React.useMemo(
     () =>
       Array.from(new Set(config.records.map((record) => record.status))).map(
-        (status) => ({ label: status, value: status }),
+        (status) => {
+          const key = getValueTranslationKey(status);
+          return { label: key ? t(key) : status, value: status };
+        },
       ),
-    [config.records],
+    [config.records, t],
   );
 
   const columns = React.useMemo<ColumnDef<ModuleRecord>[]>(
@@ -49,7 +126,9 @@ export const ModulePage = ({ moduleId }: ModulePageProps) => {
             onCheckedChange={(value) =>
               table.toggleAllPageRowsSelected(Boolean(value))
             }
-            aria-label={`Select all ${config.title} records`}
+            aria-label={t('module.common.selectAll', {
+              title: translatedTitle,
+            })}
           />
         ),
         cell: ({ row }) => (
@@ -62,7 +141,7 @@ export const ModulePage = ({ moduleId }: ModulePageProps) => {
       },
       {
         accessorKey: 'name',
-        header: 'Name',
+        header: t('module.table.name'),
         cell: ({ row }) => (
           <div className='min-w-56'>
             <p className='font-medium'>{row.original.name}</p>
@@ -72,43 +151,53 @@ export const ModulePage = ({ moduleId }: ModulePageProps) => {
       },
       {
         accessorKey: 'owner',
-        header: 'Owner',
+        header: t('module.table.owner'),
       },
       {
         accessorKey: 'status',
-        header: 'Status',
+        header: t('field.status'),
         cell: ({ row }) => (
           <Badge variant={getStatusVariant(row.original.status)}>
-            {row.original.status}
+            {(() => {
+              const key = getValueTranslationKey(row.original.status);
+              return key ? t(key) : row.original.status;
+            })()}
           </Badge>
         ),
       },
       {
         accessorKey: 'metric',
-        header: 'Metric',
+        header: t('module.table.metric'),
       },
       {
         accessorKey: 'updatedAt',
-        header: 'Updated',
+        header: t('module.table.updated'),
+        cell: ({ row }) => {
+          const key = getValueTranslationKey(row.original.updatedAt);
+          return key ? t(key) : row.original.updatedAt;
+        },
       },
     ],
-    [config.title],
+    [t, translatedTitle],
   );
 
   return (
     <PageShell
-      title={config.title}
-      description={config.description}
+      title={translatedTitle}
+      description={t(copy.description)}
       actions={
         <div className='flex flex-wrap items-center gap-2'>
           <Badge variant='outline'>{config.permission}</Badge>
-          <Button variant='outline'>
+          <Button
+            variant='outline'
+            disabled
+          >
             <Download />
-            Export
+            {t('actions.export')}
           </Button>
-          <Button>
+          <Button disabled>
             <Plus />
-            {config.primaryAction}
+            {t(copy.primaryAction)}
           </Button>
         </div>
       }
@@ -133,9 +222,9 @@ export const ModulePage = ({ moduleId }: ModulePageProps) => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Workflow State</CardTitle>
+          <CardTitle>{t('module.common.workflow.title')}</CardTitle>
           <CardDescription>
-            A lightweight production path for action, review, and audit follow-up.
+            {t('module.common.workflow.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className='grid gap-3 md:grid-cols-3'>
@@ -163,9 +252,9 @@ export const ModulePage = ({ moduleId }: ModulePageProps) => {
       <section className='grid gap-4 xl:grid-cols-[0.8fr_1.2fr]'>
         <Card>
           <CardHeader>
-            <CardTitle>Operational Queue</CardTitle>
+            <CardTitle>{t('module.common.operationalQueue.title')}</CardTitle>
             <CardDescription>
-              Prioritized items that need review or follow-up.
+              {t('module.common.operationalQueue.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className='space-y-3'>
@@ -181,7 +270,10 @@ export const ModulePage = ({ moduleId }: ModulePageProps) => {
                   </p>
                 </div>
                 <Badge variant={getStatusVariant(record.status)}>
-                  {record.status}
+                  {(() => {
+                    const key = getValueTranslationKey(record.status);
+                    return key ? t(key) : record.status;
+                  })()}
                 </Badge>
               </div>
             ))}
@@ -190,17 +282,17 @@ export const ModulePage = ({ moduleId }: ModulePageProps) => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Governance</CardTitle>
+            <CardTitle>{t('module.common.governance.title')}</CardTitle>
             <CardDescription>
-              Ownership, approvals, exports, and audit coverage.
+              {t('module.common.governance.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className='grid gap-3 sm:grid-cols-2'>
             {[
-              'Owner approval',
-              'Export cadence',
-              'Sensitive changes',
-              'Review window',
+              t('module.common.governance.ownerApproval'),
+              t('module.common.governance.exportCadence'),
+              t('module.common.governance.sensitiveChanges'),
+              t('module.common.governance.reviewWindow'),
             ].map((item) => (
               <div
                 key={item}
@@ -220,23 +312,28 @@ export const ModulePage = ({ moduleId }: ModulePageProps) => {
         data={config.records}
         columns={columns}
         getRowId={(row) => row.id}
-        searchPlaceholder={`Search ${config.title.toLowerCase()}`}
+        searchPlaceholder={t('module.common.searchPlaceholder', {
+          title: translatedTitle.toLocaleLowerCase(),
+        })}
         filters={[
           {
             columnId: 'status',
-            label: 'Status',
+            label: t('field.status'),
             options: statusOptions,
           },
         ]}
-        emptyTitle={`No ${config.title.toLowerCase()} records`}
-        emptyDescription='Records appear here after the backend API is connected.'
+        emptyTitle={t('module.common.emptyTitle', {
+          title: translatedTitle.toLocaleLowerCase(),
+        })}
+        emptyDescription={t('module.common.emptyDescription')}
         bulkActions={(selectedRows) => (
           <Button
             type='button'
             variant='outline'
             size='sm'
+            disabled
           >
-            Export {selectedRows.length}
+            {t('module.common.bulkExport', { count: selectedRows.length })}
           </Button>
         )}
       />

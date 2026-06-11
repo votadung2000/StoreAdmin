@@ -2,29 +2,42 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
-  Outlet,
 } from '@tanstack/react-router';
 import { AuthLayout } from '@/layouts/AuthLayout';
 import { MainLayout } from '@/layouts/MainLayout';
 import { ROUTES } from '@/constants/routes';
-import { SignInPage } from '@/pages/auth/SignInPage';
-import { SignUpPage } from '@/pages/auth/SignUpPage';
-import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
-import { OTPPage } from '@/pages/auth/OTPPage';
-import { DashboardPage } from '@/pages/dashboard/DashboardPage';
-import { ProductsPage } from '@/pages/products/ProductsPage';
-import { ProductDetailPage } from '@/pages/products/ProductDetailPage';
-import { ProductFormPage } from '@/pages/products/ProductFormPage';
-import { OrdersPage } from '@/pages/orders/OrdersPage';
-import { OrderDetailPage } from '@/pages/orders/OrderDetailPage';
-import { CategoriesPage } from '@/pages/categories/CategoriesPage';
-import { ModulePage } from '@/pages/production/ModulePage';
 import { NotFoundPage } from '@/pages/not-found/NotFoundPage';
 import { ProtectedRoute } from '@/routes/ProtectedRoute';
 import { PublicRoute } from '@/routes/PublicRoute';
+import {
+  AuditLogsPage,
+  CategoriesPage,
+  CustomersPage,
+  DashboardPage,
+  ForgotPasswordPage,
+  InventoryMovementsPage,
+  InventoryPage,
+  OrderDetailPage,
+  OrdersPage,
+  OTPPage,
+  ProductCreatePage,
+  ProductDetailPage,
+  ProductEditPage,
+  ProductsPage,
+  PromotionsPage,
+  ReportsPage,
+  ReturnsPage,
+  RolesPage,
+  RootRouteComponent,
+  SettingsPage,
+  ShippingPage,
+  SignInPage,
+  SignUpPage,
+  StaffPage,
+} from '@/routes/route-components';
 
 const rootRoute = createRootRoute({
-  component: Outlet,
+  component: RootRouteComponent,
   notFoundComponent: NotFoundPage,
 });
 
@@ -91,7 +104,7 @@ const productsRoute = createRoute({
 const productNewRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.PRODUCT_NEW,
-  component: () => <ProductFormPage mode='create' />,
+  component: ProductCreatePage,
 });
 
 const productDetailRoute = createRoute({
@@ -103,7 +116,7 @@ const productDetailRoute = createRoute({
 const productEditRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.PRODUCT_EDIT,
-  component: () => <ProductFormPage mode='edit' />,
+  component: ProductEditPage,
 });
 
 const ordersRoute = createRoute({
@@ -127,73 +140,73 @@ const categoriesRoute = createRoute({
 const inventoryRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.INVENTORY,
-  component: () => <ModulePage moduleId='inventory' />,
+  component: InventoryPage,
 });
 
 const inventoryMovementsRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.INVENTORY_MOVEMENTS,
-  component: () => <ModulePage moduleId='inventory-movements' />,
+  component: InventoryMovementsPage,
 });
 
 const returnsRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.RETURNS,
-  component: () => <ModulePage moduleId='returns' />,
+  component: ReturnsPage,
 });
 
 const customersRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.CUSTOMERS,
-  component: () => <ModulePage moduleId='customers' />,
+  component: CustomersPage,
 });
 
 const customerDetailRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.CUSTOMER_DETAIL,
-  component: () => <ModulePage moduleId='customers' />,
+  component: CustomersPage,
 });
 
 const promotionsRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.PROMOTIONS,
-  component: () => <ModulePage moduleId='promotions' />,
+  component: PromotionsPage,
 });
 
 const shippingRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.SHIPPING,
-  component: () => <ModulePage moduleId='shipping' />,
+  component: ShippingPage,
 });
 
 const reportsRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.REPORTS,
-  component: () => <ModulePage moduleId='reports' />,
+  component: ReportsPage,
 });
 
 const staffRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.STAFF,
-  component: () => <ModulePage moduleId='staff' />,
+  component: StaffPage,
 });
 
 const rolesRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.ROLES,
-  component: () => <ModulePage moduleId='roles' />,
+  component: RolesPage,
 });
 
 const settingsRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.SETTINGS,
-  component: () => <ModulePage moduleId='settings' />,
+  component: SettingsPage,
 });
 
 const auditLogsRoute = createRoute({
   getParentRoute: () => mainLayoutRoute,
   path: ROUTES.MAIN.AUDIT_LOGS,
-  component: () => <ModulePage moduleId='audit-logs' />,
+  component: AuditLogsPage,
 });
 
 const routeTree = rootRoute.addChildren([

@@ -13,55 +13,58 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { PageShell } from '@/components/shared/app-page-shell';
 import { ProductionDataTable } from '@/components/shared/app-data-table';
+import { productStatusKey } from '@/constants/product';
 import { ROUTES } from '@/constants/routes';
+import { getValueTranslationKey } from '@/constants/translation';
+import { formatCurrency } from '@/utils/helpers/format-currency.helper';
+import { useTranslation } from 'react-i18next';
 import {
-  formatCurrency,
-  formatNumber,
   productStatusVariant,
   products,
   type Product,
 } from '@/shared/demo/store-data';
 
 export const ProductsPage = () => {
+  const { t } = useTranslation();
   const catalogSummary = React.useMemo(
     () => [
       {
-        label: 'Published',
-        value: formatNumber(
+        label: t('products.summary.published.label'),
+        value: String(
           products.filter((product) => product.status === 'Active').length,
         ),
-        detail: 'Live products',
+        detail: t('products.summary.published.detail'),
         variant: 'success' as const,
       },
       {
-        label: 'Needs stock',
-        value: formatNumber(
+        label: t('products.summary.needsStock.label'),
+        value: String(
           products.filter((product) => product.status === 'Low stock').length,
         ),
-        detail: 'Reorder candidates',
+        detail: t('products.summary.needsStock.detail'),
         variant: 'warning' as const,
       },
       {
-        label: 'Drafts',
-        value: formatNumber(
+        label: t('products.summary.drafts.label'),
+        value: String(
           products.filter((product) => product.status === 'Draft').length,
         ),
-        detail: 'Waiting for publish',
+        detail: t('products.summary.drafts.detail'),
         variant: 'secondary' as const,
       },
       {
-        label: 'Inventory value',
-        value: formatCurrency(
-          products.reduce(
+        label: t('products.summary.inventoryValue.label'),
+        value: formatCurrency({
+          value: products.reduce(
             (total, product) => total + product.price * product.stock,
             0,
           ),
-        ),
-        detail: 'On-hand estimate',
+        }),
+        detail: t('products.summary.inventoryValue.detail'),
         variant: 'info' as const,
       },
     ],
-    [],
+    [t],
   );
 
   const columns = React.useMemo<ColumnDef<Product>[]>(
@@ -79,20 +82,22 @@ export const ProductsPage = () => {
             onCheckedChange={(value) =>
               table.toggleAllPageRowsSelected(Boolean(value))
             }
-            aria-label='Select all products'
+            aria-label={t('products.selectAll')}
           />
         ),
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(Boolean(value))}
-            aria-label={`Select ${row.original.name}`}
+            aria-label={t('products.selectProduct', {
+              name: row.original.name,
+            })}
           />
         ),
       },
       {
         accessorKey: 'name',
-        header: 'Product',
+        header: t('products.table.product'),
         cell: ({ row }) => (
           <div className='min-w-56'>
             <Link
@@ -110,45 +115,51 @@ export const ProductsPage = () => {
       },
       {
         accessorKey: 'category',
-        header: 'Category',
+        header: t('field.category'),
       },
       {
         accessorKey: 'status',
-        header: 'Status',
+        header: t('field.status'),
         cell: ({ row }) => (
           <Badge variant={productStatusVariant[row.original.status]}>
-            {row.original.status}
+            {t(productStatusKey[row.original.status])}
           </Badge>
         ),
       },
       {
         accessorKey: 'price',
-        header: 'Price',
+        header: t('products.table.price'),
         cell: ({ row }) => (
           <span className='font-medium'>
-            {formatCurrency(row.original.price)}
+            {formatCurrency({ value: row.original.price })}
           </span>
         ),
       },
       {
         accessorKey: 'stock',
-        header: 'Available',
+        header: t('products.table.available'),
         cell: ({ row }) => (
           <div>
-            <p className='font-medium'>{formatNumber(row.original.stock)}</p>
+            <p className='font-medium'>{String(row.original.stock)}</p>
             <p className='text-xs text-muted-foreground'>
-              {formatNumber(row.original.reserved)} reserved
+              {t('products.table.reserved', {
+                count: String(row.original.reserved),
+              })}
             </p>
           </div>
         ),
       },
       {
         accessorKey: 'channel',
-        header: 'Channel',
+        header: t('products.table.channel'),
       },
       {
         accessorKey: 'updatedAt',
-        header: 'Updated',
+        header: t('products.table.updated'),
+        cell: ({ row }) => {
+          const key = getValueTranslationKey(row.original.updatedAt);
+          return key ? t(key) : row.original.updatedAt;
+        },
       },
       {
         id: 'actions',
@@ -160,7 +171,9 @@ export const ProductsPage = () => {
               asChild
               variant='ghost'
               size='icon'
-              aria-label={`View ${row.original.name}`}
+              aria-label={t('products.viewProduct', {
+                name: row.original.name,
+              })}
             >
               <Link
                 to={ROUTES.MAIN.PRODUCT_DETAIL}
@@ -173,7 +186,9 @@ export const ProductsPage = () => {
               asChild
               variant='ghost'
               size='icon'
-              aria-label={`Edit ${row.original.name}`}
+              aria-label={t('products.editProduct', {
+                name: row.original.name,
+              })}
             >
               <Link
                 to={ROUTES.MAIN.PRODUCT_EDIT}
@@ -186,27 +201,33 @@ export const ProductsPage = () => {
         ),
       },
     ],
-    [],
+    [t],
   );
 
   return (
     <PageShell
-      title='Products'
-      description='Manage catalog items, SKU availability, merchandising status, and sales channels.'
+      title={t('products.title')}
+      description={t('products.description')}
       actions={
         <div className='flex flex-wrap items-center gap-2'>
-          <Button variant='outline'>
+          <Button
+            variant='outline'
+            disabled
+          >
             <FileUp />
-            Import
+            {t('actions.import')}
           </Button>
-          <Button variant='outline'>
+          <Button
+            variant='outline'
+            disabled
+          >
             <Download />
-            Export
+            {t('actions.export')}
           </Button>
           <Button asChild>
             <Link to={ROUTES.MAIN.PRODUCT_NEW}>
               <Plus />
-              Add product
+              {t('actions.addProduct')}
             </Link>
           </Button>
         </div>
@@ -233,45 +254,47 @@ export const ProductsPage = () => {
         data={products}
         columns={columns}
         getRowId={(row) => row.id}
-        searchPlaceholder='Search products, SKU, category'
+        searchPlaceholder={t('products.searchPlaceholder')}
         filters={[
           {
             columnId: 'status',
-            label: 'Status',
+            label: t('field.status'),
             options: [
-              { label: 'Active', value: 'Active' },
-              { label: 'Draft', value: 'Draft' },
-              { label: 'Low stock', value: 'Low stock' },
-              { label: 'Archived', value: 'Archived' },
+              { label: t('status.product.active'), value: 'Active' },
+              { label: t('status.product.draft'), value: 'Draft' },
+              { label: t('status.product.lowStock'), value: 'Low stock' },
+              { label: t('status.product.archived'), value: 'Archived' },
             ],
           },
           {
             columnId: 'category',
-            label: 'Category',
-            options: Array.from(new Set(products.map((item) => item.category))).map(
-              (category) => ({ label: category, value: category }),
-            ),
+            label: t('field.category'),
+            options: Array.from(
+              new Set(products.map((item) => item.category)),
+            ).map((category) => ({ label: category, value: category })),
           },
         ]}
-        emptyTitle='No products yet'
-        emptyDescription='Products appear here after catalog import or product creation.'
+        emptyTitle={t('products.emptyTitle')}
+        emptyDescription={t('products.emptyDescription')}
         bulkActions={(selectedRows) => (
           <>
             <Button
               type='button'
               variant='outline'
               size='sm'
+              disabled
             >
-              Publish {selectedRows.length}
+              {t('products.bulk.publish', { count: selectedRows.length })}
             </Button>
             <Button
               type='button'
               variant='outline'
               size='sm'
+              disabled
               className='text-destructive hover:text-destructive'
             >
               <Archive />
-              Archive
+              {t('actions.archive')}
             </Button>
           </>
         )}

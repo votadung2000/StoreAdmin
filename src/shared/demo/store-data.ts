@@ -2,22 +2,6 @@ import type { BadgeProps } from '@/components/ui/badge';
 
 export type BadgeVariant = NonNullable<BadgeProps['variant']>;
 
-export const currencyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  maximumFractionDigits: 0,
-});
-
-export const numberFormatter = new Intl.NumberFormat('en-US');
-
-export function formatCurrency(value: number) {
-  return currencyFormatter.format(value);
-}
-
-export function formatNumber(value: number) {
-  return numberFormatter.format(value);
-}
-
 export type ProductStatus = 'Active' | 'Draft' | 'Low stock' | 'Archived';
 
 export type Product = {

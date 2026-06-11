@@ -16,6 +16,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { PageShell } from '@/components/shared/app-page-shell';
+import { getValueTranslationKey } from '@/constants/translation';
+import { useTranslation } from 'react-i18next';
 import {
   dashboardMetrics,
   orderStageSummary,
@@ -36,55 +38,117 @@ const trendClassName = {
   flat: 'text-muted-foreground',
 };
 
-const focusItems = [
+const metricCopyKeys: Record<
+  string,
   {
-    title: 'Pack priority orders',
-    detail: '12 paid orders are inside the next fulfillment window.',
-    badge: 'Next 2h',
-    variant: 'info' as const,
+    label: string;
+    comparison: string;
+  }
+> = {
+  'Revenue today': {
+    label: 'dashboard.metric.revenueToday.label',
+    comparison: 'dashboard.metric.revenueToday.comparison',
   },
+  'Orders today': {
+    label: 'dashboard.metric.ordersToday.label',
+    comparison: 'dashboard.metric.ordersToday.comparison',
+  },
+  'Pending orders': {
+    label: 'dashboard.metric.pendingOrders.label',
+    comparison: 'dashboard.metric.pendingOrders.comparison',
+  },
+  'Low-stock SKUs': {
+    label: 'dashboard.metric.lowStockSkus.label',
+    comparison: 'dashboard.metric.lowStockSkus.comparison',
+  },
+};
+
+const orderStageLabelKeys = {
+  Paid: 'status.payment.paid',
+  Packing: 'dashboard.orderFlow.packing',
+  Delayed: 'status.fulfillment.delayed',
+  Refunds: 'dashboard.orderFlow.refunds',
+} as const satisfies Record<string, string>;
+
+const recentActivityCopyKeys: Record<
+  string,
   {
-    title: 'Review stock risk',
-    detail: '9 SKUs have low available stock after reservations.',
-    badge: 'Critical',
-    variant: 'danger' as const,
+    title: string;
+    detail: string;
+  }
+> = {
+  'Bulk price update completed': {
+    title: 'dashboard.recentActivity.bulkPrice.title',
+    detail: 'dashboard.recentActivity.bulkPrice.detail',
   },
-  {
-    title: 'Approve refunds',
-    detail: '6 refund requests are waiting for account review.',
-    badge: 'Finance',
-    variant: 'warning' as const,
+  'Low-stock threshold reached': {
+    title: 'dashboard.recentActivity.lowStock.title',
+    detail: 'dashboard.recentActivity.lowStock.detail',
   },
-];
+  'Refund request opened': {
+    title: 'dashboard.recentActivity.refund.title',
+    detail: 'dashboard.recentActivity.refund.detail',
+  },
+  'Promotion published': {
+    title: 'dashboard.recentActivity.promotion.title',
+    detail: 'dashboard.recentActivity.promotion.detail',
+  },
+};
 
 export const DashboardPage = () => {
+  const { t } = useTranslation();
   const maxRevenue = Math.max(...revenueTrend.map((item) => item.value));
   const lowStockProducts = products
     .filter((product) => product.status === 'Low stock' || product.stock < 12)
     .slice(0, 3);
 
+  const focusItems = [
+    {
+      title: t('dashboard.focus.packOrders.title'),
+      detail: t('dashboard.focus.packOrders.detail'),
+      badge: t('dashboard.focus.packOrders.badge'),
+      variant: 'info' as const,
+    },
+    {
+      title: t('dashboard.focus.reviewStock.title'),
+      detail: t('dashboard.focus.reviewStock.detail'),
+      badge: t('dashboard.focus.reviewStock.badge'),
+      variant: 'danger' as const,
+    },
+    {
+      title: t('dashboard.focus.approveRefunds.title'),
+      detail: t('dashboard.focus.approveRefunds.detail'),
+      badge: t('dashboard.focus.approveRefunds.badge'),
+      variant: 'warning' as const,
+    },
+  ];
+
   return (
     <PageShell
-      title='Dashboard'
-      description='Sales, fulfillment, inventory, and customer health for today.'
+      title={t('dashboard.title')}
+      description={t('dashboard.description')}
       actions={
         <div className='flex flex-wrap items-center gap-2'>
           <select
+            disabled
             className='h-10 rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-1 focus-visible:ring-ring'
-            aria-label='Dashboard date range'
+            aria-label={t('dashboard.dateRange.ariaLabel')}
             defaultValue='today'
           >
-            <option value='today'>Today</option>
-            <option value='7d'>Last 7 days</option>
-            <option value='30d'>Last 30 days</option>
+            <option value='today'>{t('dashboard.dateRange.today')}</option>
+            <option value='7d'>{t('dashboard.dateRange.7d')}</option>
+            <option value='30d'>{t('dashboard.dateRange.30d')}</option>
           </select>
-          <Button variant='outline'>
+          <Button
+            variant='outline'
+            disabled
+          >
             <RefreshCw />
-            Refresh
+            {t('actions.refresh')}
           </Button>
-          <Button>
+          <Button disabled>
             <Download />
-            Export
+            {t('actions.export')}
           </Button>
         </div>
       }
@@ -100,7 +164,7 @@ export const DashboardPage = () => {
             >
               <div className='flex items-start justify-between gap-3'>
                 <p className='text-sm font-medium text-muted-foreground'>
-                  {metric.label}
+                  {t(metricCopyKeys[metric.label].label)}
                 </p>
                 <TrendIcon
                   className={`h-4 w-4 ${trendClassName[metric.trend]}`}
@@ -108,7 +172,7 @@ export const DashboardPage = () => {
               </div>
               <p className='mt-3 text-3xl font-semibold'>{metric.value}</p>
               <p className='mt-1 text-xs text-muted-foreground'>
-                {metric.comparison}
+                {t(metricCopyKeys[metric.label].comparison)}
               </p>
             </Card>
           );
@@ -136,9 +200,9 @@ export const DashboardPage = () => {
         <Card>
           <CardHeader className='flex-row items-start justify-between gap-4'>
             <div>
-              <CardTitle>Revenue Trend</CardTitle>
+              <CardTitle>{t('dashboard.revenueTrend.title')}</CardTitle>
               <CardDescription>
-                Daily revenue across online and retail channels.
+                {t('dashboard.revenueTrend.description')}
               </CardDescription>
             </div>
             <Badge variant='info'>UTC+07</Badge>
@@ -172,9 +236,9 @@ export const DashboardPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Order Flow</CardTitle>
+            <CardTitle>{t('dashboard.orderFlow.title')}</CardTitle>
             <CardDescription>
-              Current fulfillment pressure by operational stage.
+              {t('dashboard.orderFlow.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className='space-y-3'>
@@ -184,12 +248,18 @@ export const DashboardPage = () => {
                 className='flex items-center justify-between gap-3 rounded-md border p-3 transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-accent/40 hover:shadow-sm'
               >
                 <div className='min-w-0'>
-                  <p className='font-medium'>{stage.label}</p>
+                  <p className='font-medium'>
+                    {t(orderStageLabelKeys[stage.label])}
+                  </p>
                   <p className='text-sm text-muted-foreground'>
-                    {stage.value} orders
+                    {t('dashboard.orderFlow.orders', {
+                      count: String(stage.value),
+                    })}
                   </p>
                 </div>
-                <Badge variant={stage.variant}>{stage.label}</Badge>
+                <Badge variant={stage.variant}>
+                  {t(orderStageLabelKeys[stage.label])}
+                </Badge>
               </div>
             ))}
           </CardContent>
@@ -199,9 +269,9 @@ export const DashboardPage = () => {
       <section className='grid gap-4 xl:grid-cols-[1fr_1fr]'>
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
+            <CardTitle>{t('dashboard.recentActivity.title')}</CardTitle>
             <CardDescription>
-              Audit-worthy changes across catalog and operations.
+              {t('dashboard.recentActivity.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
@@ -213,13 +283,18 @@ export const DashboardPage = () => {
                 <div className='mt-1 h-2.5 w-2.5 rounded-full bg-primary' />
                 <div className='min-w-0 flex-1 border-b pb-4 last:border-b-0 last:pb-0'>
                   <div className='flex flex-wrap items-center justify-between gap-2'>
-                    <p className='font-medium'>{activity.title}</p>
+                    <p className='font-medium'>
+                      {t(recentActivityCopyKeys[activity.title].title)}
+                    </p>
                     <span className='text-xs text-muted-foreground'>
-                      {activity.time}
+                      {(() => {
+                        const key = getValueTranslationKey(activity.time);
+                        return key ? t(key) : activity.time;
+                      })()}
                     </span>
                   </div>
                   <p className='text-sm text-muted-foreground'>
-                    {activity.detail}
+                    {t(recentActivityCopyKeys[activity.title].detail)}
                   </p>
                 </div>
               </div>
@@ -230,9 +305,9 @@ export const DashboardPage = () => {
         <Card>
           <CardHeader className='flex-row items-start justify-between gap-4'>
             <div>
-              <CardTitle>Inventory Alerts</CardTitle>
+              <CardTitle>{t('dashboard.inventoryAlerts.title')}</CardTitle>
               <CardDescription>
-                SKUs with constrained available stock.
+                {t('dashboard.inventoryAlerts.description')}
               </CardDescription>
             </div>
             <PackageCheck className='h-5 w-5 text-muted-foreground' />
@@ -250,9 +325,15 @@ export const DashboardPage = () => {
                   </p>
                 </div>
                 <div className='text-left md:text-right'>
-                  <p className='font-semibold'>{product.stock} on hand</p>
+                  <p className='font-semibold'>
+                    {t('dashboard.inventoryAlerts.onHand', {
+                      count: String(product.stock),
+                    })}
+                  </p>
                   <p className='text-xs text-muted-foreground'>
-                    {product.reserved} reserved
+                    {t('dashboard.inventoryAlerts.reserved', {
+                      count: String(product.reserved),
+                    })}
                   </p>
                 </div>
               </div>

@@ -11,28 +11,34 @@ import {
 } from '@/components/ui/card';
 import { PageShell } from '@/components/shared/app-page-shell';
 import { PageState } from '@/components/shared/app-page-state';
+import { fulfillmentStatusKey, priorityStatusKey } from '@/constants/order';
+import { paymentStatusKey } from '@/constants/payment';
 import { ROUTES } from '@/constants/routes';
+import { genericStatusKey } from '@/constants/status';
+import { getValueTranslationKey } from '@/constants/translation';
+import { formatCurrency } from '@/utils/helpers/format-currency.helper';
+import { useTranslation } from 'react-i18next';
 import {
-  formatCurrency,
   fulfillmentStatusVariant,
   orders,
   paymentStatusVariant,
 } from '@/shared/demo/store-data';
 
 export const OrderDetailPage = () => {
+  const { t } = useTranslation();
   const params = useParams({ strict: false }) as { orderId?: string };
   const order = orders.find((item) => item.id === params.orderId);
 
   if (!order) {
     return (
       <PageShell
-        title='Order not found'
-        description='The requested order is not available.'
+        title={t('orderDetail.notFoundTitle')}
+        description={t('orderDetail.notFoundDescription')}
       >
         <PageState
           variant='empty'
-          title='Order not found'
-          description='Check the order ID or return to the order list.'
+          title={t('orderDetail.notFoundTitle')}
+          description={t('orderDetail.notFoundState')}
         />
       </PageShell>
     );
@@ -41,7 +47,13 @@ export const OrderDetailPage = () => {
   return (
     <PageShell
       title={`#${order.id}`}
-      description={`${order.customer} / ${order.items} items / ${order.placedAt}`}
+      description={t('orderDetail.description', {
+        customer: order.customer,
+        items: order.items,
+        placedAt: getValueTranslationKey(order.placedAt)
+          ? t(getValueTranslationKey(order.placedAt)!)
+          : order.placedAt,
+      })}
       actions={
         <Button
           asChild
@@ -49,7 +61,7 @@ export const OrderDetailPage = () => {
         >
           <Link to={ROUTES.MAIN.ORDERS}>
             <ArrowLeft />
-            Orders
+            {t('orders.title')}
           </Link>
         </Button>
       }
@@ -57,37 +69,41 @@ export const OrderDetailPage = () => {
       <section className='grid gap-4 lg:grid-cols-3'>
         <Card className='transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md'>
           <CardHeader>
-            <CardTitle>Payment</CardTitle>
+            <CardTitle>{t('orderDetail.payment.title')}</CardTitle>
             <CardDescription>{order.email}</CardDescription>
           </CardHeader>
           <CardContent className='flex items-center justify-between'>
             <Badge variant={paymentStatusVariant[order.payment]}>
-              {order.payment}
+              {t(paymentStatusKey[order.payment])}
             </Badge>
             <span className='text-2xl font-semibold'>
-              {formatCurrency(order.total)}
+              {formatCurrency({ value: order.total })}
             </span>
           </CardContent>
         </Card>
         <Card className='transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md'>
           <CardHeader>
-            <CardTitle>Fulfillment</CardTitle>
-            <CardDescription>Warehouse execution state.</CardDescription>
+            <CardTitle>{t('orderDetail.fulfillment.title')}</CardTitle>
+            <CardDescription>
+              {t('orderDetail.fulfillment.description')}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Badge variant={fulfillmentStatusVariant[order.fulfillment]}>
-              {order.fulfillment}
+              {t(fulfillmentStatusKey[order.fulfillment])}
             </Badge>
           </CardContent>
         </Card>
         <Card className='transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md'>
           <CardHeader>
-            <CardTitle>Priority</CardTitle>
-            <CardDescription>Service and SLA handling.</CardDescription>
+            <CardTitle>{t('orderDetail.priority.title')}</CardTitle>
+            <CardDescription>
+              {t('orderDetail.priority.description')}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Badge variant={order.priority === 'High' ? 'danger' : 'outline'}>
-              {order.priority}
+              {t(priorityStatusKey[order.priority])}
             </Badge>
           </CardContent>
         </Card>
@@ -95,9 +111,18 @@ export const OrderDetailPage = () => {
 
       <section className='grid gap-3 md:grid-cols-3'>
         {[
-          ['Fraud review', order.priority === 'High' ? 'Required' : 'Clear'],
-          ['Packing SLA', order.fulfillment === 'Delayed' ? 'Missed' : 'On track'],
-          ['Customer contact', order.payment === 'Failed' ? 'Needed' : 'Optional'],
+          [
+            t('orderDetail.fraudReview'),
+            order.priority === 'High' ? 'Required' : 'Clear',
+          ],
+          [
+            t('orderDetail.packingSla'),
+            order.fulfillment === 'Delayed' ? 'Missed' : 'On track',
+          ],
+          [
+            t('orderDetail.customerContact'),
+            order.payment === 'Failed' ? 'Needed' : 'Optional',
+          ],
         ].map(([label, value]) => (
           <div
             key={label}
@@ -111,7 +136,7 @@ export const OrderDetailPage = () => {
                   : 'success'
               }
             >
-              {value}
+              {t(genericStatusKey[value] ?? 'status.generic.clear')}
             </Badge>
           </div>
         ))}
@@ -119,30 +144,30 @@ export const OrderDetailPage = () => {
 
       <Card className='transition-[box-shadow,border-color] duration-200 hover:border-primary/25 hover:shadow-md'>
         <CardHeader>
-          <CardTitle>Timeline</CardTitle>
+          <CardTitle>{t('orderDetail.timeline.title')}</CardTitle>
           <CardDescription>
-            Payment, packing, handoff, and carrier events.
+            {t('orderDetail.timeline.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className='grid gap-3 md:grid-cols-3'>
           {[
             {
               icon: CreditCard,
-              title: 'Payment authorized',
-              detail: `${order.payment} / ${formatCurrency(order.total)}`,
+              title: t('orderDetail.paymentAuthorized.title'),
+              detail: `${t(paymentStatusKey[order.payment])} / ${formatCurrency({ value: order.total })}`,
             },
             {
               icon: PackageCheck,
-              title: 'Warehouse queue',
-              detail: order.fulfillment,
+              title: t('orderDetail.warehouseQueue.title'),
+              detail: t(fulfillmentStatusKey[order.fulfillment]),
             },
             {
               icon: Truck,
-              title: 'Carrier handoff',
+              title: t('orderDetail.carrierHandoff.title'),
               detail:
                 order.fulfillment === 'Shipped'
-                  ? 'Tracking available'
-                  : 'Waiting for shipment',
+                  ? t('orderDetail.carrierHandoff.detail.shipped')
+                  : t('orderDetail.carrierHandoff.detail.waiting'),
             },
           ].map((event) => (
             <div

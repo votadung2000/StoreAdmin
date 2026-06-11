@@ -36,6 +36,7 @@ import {
 } from '@/components/ui/table';
 import { PageState } from '@/components/shared/app-page-state';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 export type DataTableSelectFilter = {
   columnId: string;
@@ -80,8 +81,8 @@ export function ProductionDataTable<TData, TValue>({
   bulkActions,
   emptyTitle,
   emptyDescription,
-  filteredEmptyTitle = 'No matching records',
-  filteredEmptyDescription = 'Adjust search or filters to broaden the result set.',
+  filteredEmptyTitle,
+  filteredEmptyDescription,
   isLoading = false,
   error,
   onRetry,
@@ -89,6 +90,7 @@ export function ProductionDataTable<TData, TValue>({
   pageSizeOptions = [8, 12, 20],
   getRowId,
 }: ProductionDataTableProps<TData, TValue>) {
+  const { t } = useTranslation();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -138,6 +140,10 @@ export function ProductionDataTable<TData, TValue>({
   const selectedRows = table
     .getFilteredSelectedRowModel()
     .rows.map((row) => row.original);
+  const resolvedFilteredEmptyTitle =
+    filteredEmptyTitle ?? t('table.filteredEmptyTitle');
+  const resolvedFilteredEmptyDescription =
+    filteredEmptyDescription ?? t('table.filteredEmptyDescription');
   const hasFilters = searchInput.length > 0 || columnFilters.length > 0;
   const rows = table.getRowModel().rows;
   const leafColumnCount = table.getAllLeafColumns().length;
@@ -165,6 +171,7 @@ export function ProductionDataTable<TData, TValue>({
     setSearchInput('');
     setGlobalFilter('');
     setColumnFilters([]);
+    setRowSelection({});
     setSorting([]);
     setPagination((current) => ({ ...current, pageIndex: 0 }));
   };
@@ -187,7 +194,7 @@ export function ProductionDataTable<TData, TValue>({
                 type='button'
                 onClick={() => setSearchInput('')}
                 className='absolute right-2 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
-                aria-label='Clear search'
+                aria-label={t('table.clearSearch')}
               >
                 <X className='h-3.5 w-3.5' />
               </button>
@@ -213,7 +220,7 @@ export function ProductionDataTable<TData, TValue>({
                   }}
                   className='h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground outline-none transition-colors focus-visible:ring-1 focus-visible:ring-ring'
                 >
-                  <option value=''>All</option>
+                  <option value=''>{t('table.all')}</option>
                   {filter.options.map((option) => (
                     <option
                       key={option.value}
@@ -237,7 +244,7 @@ export function ProductionDataTable<TData, TValue>({
               onClick={resetFilters}
             >
               <RotateCcw />
-              Reset
+              {t('table.reset')}
             </Button>
           )}
           {toolbarActions}
@@ -249,12 +256,12 @@ export function ProductionDataTable<TData, TValue>({
           <Filter className='h-4 w-4' />
           {searchInput && (
             <span className='inline-flex h-7 items-center gap-2 rounded-md bg-muted px-2 text-foreground'>
-              Search: {searchInput}
+              {t('table.searchPrefix', { query: searchInput })}
               <button
                 type='button'
                 onClick={() => setSearchInput('')}
                 className='text-muted-foreground transition-colors hover:text-foreground'
-                aria-label='Clear search filter'
+                aria-label={t('table.clearSearchFilter')}
               >
                 <X className='h-3.5 w-3.5' />
               </button>
@@ -273,7 +280,7 @@ export function ProductionDataTable<TData, TValue>({
                   setPagination((current) => ({ ...current, pageIndex: 0 }));
                 }}
                 className='text-muted-foreground transition-colors hover:text-foreground'
-                aria-label={`Clear ${filter.label} filter`}
+                aria-label={`${t('table.clearSearchFilter')}: ${filter.label}`}
               >
                 <X className='h-3.5 w-3.5' />
               </button>
@@ -285,7 +292,7 @@ export function ProductionDataTable<TData, TValue>({
       {selectedRows.length > 0 && bulkActions && (
         <div className='flex flex-wrap items-center justify-between gap-3 rounded-md border border-primary/20 bg-primary/5 px-4 py-3 text-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-top-1'>
           <span className='font-medium'>
-            {selectedRows.length} selected
+            {t('table.selected', { count: selectedRows.length })}
           </span>
           <div className='flex flex-wrap items-center gap-2'>
             {bulkActions(selectedRows)}
@@ -294,7 +301,7 @@ export function ProductionDataTable<TData, TValue>({
       )}
 
       <div className='overflow-hidden rounded-md border bg-background shadow-sm'>
-        <Table>
+        <Table className='min-w-[960px]'>
           <TableHeader className='bg-muted/60'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
@@ -353,9 +360,9 @@ export function ProductionDataTable<TData, TValue>({
                 <TableCell colSpan={leafColumnCount}>
                   <PageState
                     variant='error'
-                    title='Could not load records'
+                    title={t('table.couldNotLoadRecords')}
                     description={error}
-                    actionLabel={onRetry ? 'Retry' : undefined}
+                    actionLabel={onRetry ? t('table.retry') : undefined}
                     onAction={onRetry}
                     className='min-h-56 border-0 shadow-none'
                   />
@@ -368,7 +375,7 @@ export function ProductionDataTable<TData, TValue>({
               rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
+                  data-state={row.getIsSelected() ? 'selected' : undefined}
                   className='transition-[background-color,box-shadow] motion-safe:animate-in motion-safe:fade-in-0 hover:shadow-[inset_3px_0_0_var(--primary)]'
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -384,9 +391,11 @@ export function ProductionDataTable<TData, TValue>({
                 <TableCell colSpan={leafColumnCount}>
                   <PageState
                     variant='empty'
-                    title={hasFilters ? filteredEmptyTitle : emptyTitle}
+                    title={hasFilters ? resolvedFilteredEmptyTitle : emptyTitle}
                     description={
-                      hasFilters ? filteredEmptyDescription : emptyDescription
+                      hasFilters
+                        ? resolvedFilteredEmptyDescription
+                        : emptyDescription
                     }
                     className='min-h-56 border-0 shadow-none'
                   />
@@ -399,12 +408,20 @@ export function ProductionDataTable<TData, TValue>({
 
       <div className='flex flex-col gap-3 rounded-md border bg-background px-3 py-3 text-sm text-muted-foreground shadow-sm md:flex-row md:items-center md:justify-between'>
         <div aria-live='polite'>
-          Showing {rows.length} of {table.getFilteredRowModel().rows.length}{' '}
-          records{hasFilters ? ` from ${data.length}` : ''}
+          {hasFilters
+            ? t('table.showingFiltered', {
+                visible: rows.length,
+                total: table.getFilteredRowModel().rows.length,
+                all: data.length,
+              })
+            : t('table.showing', {
+                visible: rows.length,
+                total: table.getFilteredRowModel().rows.length,
+              })}
         </div>
         <div className='flex flex-wrap items-center gap-2'>
           <label className='flex items-center gap-2'>
-            Rows
+            {t('table.rows')}
             <select
               value={pagination.pageSize}
               onChange={(event) => {
@@ -423,8 +440,10 @@ export function ProductionDataTable<TData, TValue>({
             </select>
           </label>
           <span className='min-w-24 text-center text-foreground'>
-            Page {table.getState().pagination.pageIndex + 1} of{' '}
-            {Math.max(table.getPageCount(), 1)}
+            {t('table.page', {
+              page: table.getState().pagination.pageIndex + 1,
+              total: Math.max(table.getPageCount(), 1),
+            })}
           </span>
           <Button
             type='button'
@@ -432,7 +451,7 @@ export function ProductionDataTable<TData, TValue>({
             size='icon'
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            aria-label='Previous page'
+            aria-label={t('table.previousPage')}
             className={cn('h-9 w-9')}
           >
             <ChevronLeft />
@@ -443,7 +462,7 @@ export function ProductionDataTable<TData, TValue>({
             size='icon'
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            aria-label='Next page'
+            aria-label={t('table.nextPage')}
             className='h-9 w-9'
           >
             <ChevronRight />

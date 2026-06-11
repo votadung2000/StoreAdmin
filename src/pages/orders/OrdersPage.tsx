@@ -13,9 +13,13 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { PageShell } from '@/components/shared/app-page-shell';
 import { ProductionDataTable } from '@/components/shared/app-data-table';
+import { fulfillmentStatusKey, priorityStatusKey } from '@/constants/order';
+import { paymentStatusKey } from '@/constants/payment';
 import { ROUTES } from '@/constants/routes';
+import { getValueTranslationKey } from '@/constants/translation';
+import { formatCurrency } from '@/utils/helpers/format-currency.helper';
+import { useTranslation } from 'react-i18next';
 import {
-  formatCurrency,
   fulfillmentStatusVariant,
   orders,
   paymentStatusVariant,
@@ -23,47 +27,48 @@ import {
 } from '@/shared/demo/store-data';
 
 export const OrdersPage = () => {
+  const { t } = useTranslation();
   const orderSummary = React.useMemo(
     () => [
       {
-        label: 'Paid revenue',
-        value: formatCurrency(
-          orders
+        label: t('orders.summary.paidRevenue.label'),
+        value: formatCurrency({
+          value: orders
             .filter((order) => order.payment === 'Paid')
             .reduce((total, order) => total + order.total, 0),
-        ),
-        detail: 'Ready to fulfill',
+        }),
+        detail: t('orders.summary.paidRevenue.detail'),
         variant: 'success' as const,
       },
       {
-        label: 'Packing queue',
+        label: t('orders.summary.packingQueue.label'),
         value: String(
           orders.filter((order) => order.fulfillment === 'Ready to pack')
             .length,
         ),
-        detail: 'Warehouse action',
+        detail: t('orders.summary.packingQueue.detail'),
         variant: 'info' as const,
       },
       {
-        label: 'Exceptions',
+        label: t('orders.summary.exceptions.label'),
         value: String(
           orders.filter(
             (order) => order.payment === 'Failed' || order.priority === 'High',
           ).length,
         ),
-        detail: 'Needs review',
+        detail: t('orders.summary.exceptions.detail'),
         variant: 'danger' as const,
       },
       {
-        label: 'Pending payment',
+        label: t('orders.summary.pendingPayment.label'),
         value: String(
           orders.filter((order) => order.payment === 'Pending').length,
         ),
-        detail: 'Follow-up list',
+        detail: t('orders.summary.pendingPayment.detail'),
         variant: 'warning' as const,
       },
     ],
-    [],
+    [t],
   );
 
   const columns = React.useMemo<ColumnDef<Order>[]>(
@@ -80,20 +85,20 @@ export const OrdersPage = () => {
             onCheckedChange={(value) =>
               table.toggleAllPageRowsSelected(Boolean(value))
             }
-            aria-label='Select all orders'
+            aria-label={t('orders.selectAll')}
           />
         ),
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(Boolean(value))}
-            aria-label={`Select order ${row.original.id}`}
+            aria-label={t('orders.selectOrder', { id: row.original.id })}
           />
         ),
       },
       {
         accessorKey: 'id',
-        header: 'Order',
+        header: t('orders.table.order'),
         cell: ({ row }) => (
           <Link
             to={ROUTES.MAIN.ORDER_DETAIL}
@@ -106,7 +111,7 @@ export const OrdersPage = () => {
       },
       {
         accessorKey: 'customer',
-        header: 'Customer',
+        header: t('orders.table.customer'),
         cell: ({ row }) => (
           <div className='min-w-48'>
             <p className='font-medium'>{row.original.customer}</p>
@@ -118,43 +123,49 @@ export const OrdersPage = () => {
       },
       {
         accessorKey: 'payment',
-        header: 'Payment',
+        header: t('orders.table.payment'),
         cell: ({ row }) => (
           <Badge variant={paymentStatusVariant[row.original.payment]}>
-            {row.original.payment}
+            {t(paymentStatusKey[row.original.payment])}
           </Badge>
         ),
       },
       {
         accessorKey: 'fulfillment',
-        header: 'Fulfillment',
+        header: t('orders.table.fulfillment'),
         cell: ({ row }) => (
           <Badge variant={fulfillmentStatusVariant[row.original.fulfillment]}>
-            {row.original.fulfillment}
+            {t(fulfillmentStatusKey[row.original.fulfillment])}
           </Badge>
         ),
       },
       {
         accessorKey: 'priority',
-        header: 'Priority',
+        header: t('orders.table.priority'),
         cell: ({ row }) => (
-          <Badge variant={row.original.priority === 'High' ? 'danger' : 'outline'}>
-            {row.original.priority}
+          <Badge
+            variant={row.original.priority === 'High' ? 'danger' : 'outline'}
+          >
+            {t(priorityStatusKey[row.original.priority])}
           </Badge>
         ),
       },
       {
         accessorKey: 'total',
-        header: 'Total',
+        header: t('orders.table.total'),
         cell: ({ row }) => (
           <span className='font-medium'>
-            {formatCurrency(row.original.total)}
+            {formatCurrency({ value: row.original.total })}
           </span>
         ),
       },
       {
         accessorKey: 'placedAt',
-        header: 'Placed',
+        header: t('orders.table.placed'),
+        cell: ({ row }) => {
+          const key = getValueTranslationKey(row.original.placedAt);
+          return key ? t(key) : row.original.placedAt;
+        },
       },
       {
         id: 'actions',
@@ -165,7 +176,7 @@ export const OrdersPage = () => {
             asChild
             variant='ghost'
             size='icon'
-            aria-label={`View order ${row.original.id}`}
+            aria-label={t('orders.viewOrder', { id: row.original.id })}
           >
             <Link
               to={ROUTES.MAIN.ORDER_DETAIL}
@@ -177,22 +188,25 @@ export const OrdersPage = () => {
         ),
       },
     ],
-    [],
+    [t],
   );
 
   return (
     <PageShell
-      title='Orders'
-      description='Track payment health, packing workload, fulfillment status, and support exceptions.'
+      title={t('orders.title')}
+      description={t('orders.description')}
       actions={
         <div className='flex flex-wrap items-center gap-2'>
-          <Button variant='outline'>
+          <Button
+            variant='outline'
+            disabled
+          >
             <Printer />
-            Print slips
+            {t('actions.printSlips')}
           </Button>
-          <Button>
+          <Button disabled>
             <Download />
-            Export
+            {t('actions.export')}
           </Button>
         </div>
       }
@@ -218,48 +232,56 @@ export const OrdersPage = () => {
         data={orders}
         columns={columns}
         getRowId={(row) => row.id}
-        searchPlaceholder='Search orders, customer, email'
+        searchPlaceholder={t('orders.searchPlaceholder')}
         filters={[
           {
             columnId: 'payment',
-            label: 'Payment',
+            label: t('orders.table.payment'),
             options: [
-              { label: 'Paid', value: 'Paid' },
-              { label: 'Pending', value: 'Pending' },
-              { label: 'Failed', value: 'Failed' },
-              { label: 'Refunded', value: 'Refunded' },
+              { label: t('status.payment.paid'), value: 'Paid' },
+              { label: t('status.payment.pending'), value: 'Pending' },
+              { label: t('status.payment.failed'), value: 'Failed' },
+              { label: t('status.payment.refunded'), value: 'Refunded' },
             ],
           },
           {
             columnId: 'fulfillment',
-            label: 'Fulfillment',
+            label: t('orders.table.fulfillment'),
             options: [
-              { label: 'Ready to pack', value: 'Ready to pack' },
-              { label: 'Packed', value: 'Packed' },
-              { label: 'Shipped', value: 'Shipped' },
-              { label: 'Delayed', value: 'Delayed' },
-              { label: 'Awaiting payment', value: 'Awaiting payment' },
+              {
+                label: t('status.fulfillment.readyToPack'),
+                value: 'Ready to pack',
+              },
+              { label: t('status.fulfillment.packed'), value: 'Packed' },
+              { label: t('status.fulfillment.shipped'), value: 'Shipped' },
+              { label: t('status.fulfillment.delayed'), value: 'Delayed' },
+              {
+                label: t('status.fulfillment.awaitingPayment'),
+                value: 'Awaiting payment',
+              },
             ],
           },
         ]}
-        emptyTitle='No orders yet'
-        emptyDescription='New orders will appear here once checkout is connected.'
+        emptyTitle={t('orders.emptyTitle')}
+        emptyDescription={t('orders.emptyDescription')}
         bulkActions={(selectedRows) => (
           <>
             <Button
               type='button'
               variant='outline'
               size='sm'
+              disabled
             >
               <PackageCheck />
-              Mark packed
+              {t('actions.markPacked')}
             </Button>
             <Button
               type='button'
               variant='outline'
               size='sm'
+              disabled
             >
-              Print {selectedRows.length}
+              {t('orders.bulk.print', { count: selectedRows.length })}
             </Button>
           </>
         )}

@@ -13,15 +13,17 @@ import {
 } from '@/components/ui/card';
 import { PageShell } from '@/components/shared/app-page-shell';
 import { ProductionDataTable } from '@/components/shared/app-data-table';
+import { categoryStatusKey } from '@/constants/category';
+import { formatCurrency } from '@/utils/helpers/format-currency.helper';
+import { useTranslation } from 'react-i18next';
 import {
   categories,
   categoryStatusVariant,
-  formatCurrency,
-  formatNumber,
   type Category,
 } from '@/shared/demo/store-data';
 
 export const CategoriesPage = () => {
+  const { t } = useTranslation();
   const [selectedCategoryId, setSelectedCategoryId] = React.useState(
     categories[0]?.id ?? '',
   );
@@ -31,42 +33,47 @@ export const CategoriesPage = () => {
   const categorySummary = React.useMemo(
     () => [
       {
-        label: 'Visible',
-        value: formatNumber(
+        label: t('categories.summary.visible.label'),
+        value: String(
           categories.filter((category) => category.status === 'Visible').length,
         ),
-        detail: 'Storefront areas',
+        detail: t('categories.summary.visible.detail'),
         variant: 'success' as const,
       },
       {
-        label: 'Hidden or draft',
-        value: formatNumber(
+        label: t('categories.summary.hiddenOrDraft.label'),
+        value: String(
           categories.filter((category) => category.status !== 'Visible').length,
         ),
-        detail: 'Needs review',
+        detail: t('categories.summary.hiddenOrDraft.detail'),
         variant: 'warning' as const,
       },
       {
-        label: 'Category revenue',
-        value: formatCurrency(
-          categories.reduce((total, category) => total + category.revenue, 0),
-        ),
-        detail: '30-day total',
+        label: t('categories.summary.categoryRevenue.label'),
+        value: formatCurrency({
+          value: categories.reduce(
+            (total, category) => total + category.revenue,
+            0,
+          ),
+        }),
+        detail: t('categories.summary.categoryRevenue.detail'),
         variant: 'info' as const,
       },
       {
-        label: 'Average SEO',
-        value: formatNumber(
+        label: t('categories.summary.averageSeo.label'),
+        value: String(
           Math.round(
-            categories.reduce((total, category) => total + category.seoScore, 0) /
-              categories.length,
+            categories.reduce(
+              (total, category) => total + category.seoScore,
+              0,
+            ) / categories.length,
           ),
         ),
-        detail: 'Readiness score',
+        detail: t('categories.summary.averageSeo.detail'),
         variant: 'secondary' as const,
       },
     ],
-    [],
+    [t],
   );
 
   const columns = React.useMemo<ColumnDef<Category>[]>(
@@ -83,20 +90,22 @@ export const CategoriesPage = () => {
             onCheckedChange={(value) =>
               table.toggleAllPageRowsSelected(Boolean(value))
             }
-            aria-label='Select all categories'
+            aria-label={t('categories.selectAll')}
           />
         ),
         cell: ({ row }) => (
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(Boolean(value))}
-            aria-label={`Select ${row.original.name}`}
+            aria-label={t('categories.selectCategory', {
+              name: row.original.name,
+            })}
           />
         ),
       },
       {
         accessorKey: 'name',
-        header: 'Category',
+        header: t('field.category'),
         cell: ({ row }) => (
           <button
             type='button'
@@ -112,35 +121,35 @@ export const CategoriesPage = () => {
       },
       {
         accessorKey: 'parent',
-        header: 'Parent',
-        cell: ({ row }) => row.original.parent ?? 'Root',
+        header: t('categories.table.parent'),
+        cell: ({ row }) => row.original.parent ?? t('categories.table.root'),
       },
       {
         accessorKey: 'status',
-        header: 'Status',
+        header: t('field.status'),
         cell: ({ row }) => (
           <Badge variant={categoryStatusVariant[row.original.status]}>
-            {row.original.status}
+            {t(categoryStatusKey[row.original.status])}
           </Badge>
         ),
       },
       {
         accessorKey: 'products',
-        header: 'Products',
-        cell: ({ row }) => formatNumber(row.original.products),
+        header: t('categories.table.products'),
+        cell: ({ row }) => String(row.original.products),
       },
       {
         accessorKey: 'revenue',
-        header: 'Revenue',
+        header: t('categories.table.revenue'),
         cell: ({ row }) => (
           <span className='font-medium'>
-            {formatCurrency(row.original.revenue)}
+            {formatCurrency({ value: row.original.revenue })}
           </span>
         ),
       },
       {
         accessorKey: 'seoScore',
-        header: 'SEO',
+        header: t('categories.table.seo'),
         cell: ({ row }) => (
           <Badge variant={row.original.seoScore >= 85 ? 'success' : 'warning'}>
             {row.original.seoScore}
@@ -149,25 +158,28 @@ export const CategoriesPage = () => {
       },
       {
         accessorKey: 'sortOrder',
-        header: 'Sort',
+        header: t('categories.table.sort'),
       },
     ],
-    [],
+    [t],
   );
 
   return (
     <PageShell
-      title='Categories'
-      description='Organize products by category hierarchy, merchandising priority, storefront visibility, and SEO readiness.'
+      title={t('categories.title')}
+      description={t('categories.description')}
       actions={
         <div className='flex flex-wrap items-center gap-2'>
-          <Button variant='outline'>
+          <Button
+            variant='outline'
+            disabled
+          >
             <Save />
-            Save order
+            {t('actions.saveOrder')}
           </Button>
-          <Button>
+          <Button disabled>
             <Plus />
-            Add category
+            {t('actions.addCategory')}
           </Button>
         </div>
       }
@@ -192,9 +204,9 @@ export const CategoriesPage = () => {
       <section className='grid gap-4 xl:grid-cols-[0.85fr_1.35fr]'>
         <Card>
           <CardHeader>
-            <CardTitle>Category Tree</CardTitle>
+            <CardTitle>{t('categories.tree.title')}</CardTitle>
             <CardDescription>
-              Root and child categories ordered for storefront navigation.
+              {t('categories.tree.description')}
             </CardDescription>
           </CardHeader>
           <CardContent className='space-y-2'>
@@ -215,11 +227,14 @@ export const CategoriesPage = () => {
                     {category.name}
                   </span>
                   <span className='block text-xs text-muted-foreground'>
-                    {category.products} products / order {category.sortOrder}
+                    {t('categories.tree.itemMeta', {
+                      count: String(category.products),
+                      order: category.sortOrder,
+                    })}
                   </span>
                 </span>
                 <Badge variant={categoryStatusVariant[category.status]}>
-                  {category.status}
+                  {t(categoryStatusKey[category.status])}
                 </Badge>
               </button>
             ))}
@@ -229,32 +244,40 @@ export const CategoriesPage = () => {
         <Card>
           <CardHeader className='flex-row items-start justify-between gap-4'>
             <div>
-              <CardTitle>{selectedCategory?.name ?? 'Category'}</CardTitle>
+              <CardTitle>
+                {selectedCategory?.name ?? t('field.category')}
+              </CardTitle>
               <CardDescription>
-                Merchandising summary and operational checks.
+                {t('categories.detail.description')}
               </CardDescription>
             </div>
             {selectedCategory && (
               <Badge variant={categoryStatusVariant[selectedCategory.status]}>
-                {selectedCategory.status}
+                {t(categoryStatusKey[selectedCategory.status])}
               </Badge>
             )}
           </CardHeader>
           <CardContent className='grid gap-4 md:grid-cols-3'>
             <div className='rounded-md border p-3'>
-              <p className='text-sm text-muted-foreground'>Products</p>
+              <p className='text-sm text-muted-foreground'>
+                {t('categories.table.products')}
+              </p>
               <p className='mt-1 text-2xl font-semibold'>
-                {formatNumber(selectedCategory?.products ?? 0)}
+                {String(selectedCategory?.products ?? 0)}
               </p>
             </div>
             <div className='rounded-md border p-3'>
-              <p className='text-sm text-muted-foreground'>30-day revenue</p>
+              <p className='text-sm text-muted-foreground'>
+                {t('categories.detail.revenue30d')}
+              </p>
               <p className='mt-1 text-2xl font-semibold'>
-                {formatCurrency(selectedCategory?.revenue ?? 0)}
+                {formatCurrency({ value: selectedCategory?.revenue ?? 0 })}
               </p>
             </div>
             <div className='rounded-md border p-3'>
-              <p className='text-sm text-muted-foreground'>SEO score</p>
+              <p className='text-sm text-muted-foreground'>
+                {t('categories.detail.seoScore')}
+              </p>
               <p className='mt-1 text-2xl font-semibold'>
                 {selectedCategory?.seoScore ?? 0}
               </p>
@@ -268,15 +291,21 @@ export const CategoriesPage = () => {
             <div className='rounded-md border p-3 md:col-span-3'>
               <div className='flex flex-wrap items-center justify-between gap-3'>
                 <div>
-                  <p className='font-medium'>Storefront visibility</p>
+                  <p className='font-medium'>
+                    {t('categories.detail.storefrontTitle')}
+                  </p>
                   <p className='text-sm text-muted-foreground'>
                     {selectedCategory?.storefront
-                      ? 'Visible in storefront navigation'
-                      : 'Hidden from storefront navigation'}
+                      ? t('categories.detail.storefrontVisible')
+                      : t('categories.detail.storefrontHidden')}
                   </p>
                 </div>
-                <Badge variant={selectedCategory?.storefront ? 'success' : 'outline'}>
-                  {selectedCategory?.storefront ? 'Visible' : 'Hidden'}
+                <Badge
+                  variant={selectedCategory?.storefront ? 'success' : 'outline'}
+                >
+                  {selectedCategory?.storefront
+                    ? t('status.storefront.visible')
+                    : t('status.storefront.hidden')}
                 </Badge>
               </div>
             </div>
@@ -288,15 +317,15 @@ export const CategoriesPage = () => {
         data={categories}
         columns={columns}
         getRowId={(row) => row.id}
-        searchPlaceholder='Search categories, slug, parent'
+        searchPlaceholder={t('categories.searchPlaceholder')}
         filters={[
           {
             columnId: 'status',
-            label: 'Status',
+            label: t('field.status'),
             options: [
-              { label: 'Visible', value: 'Visible' },
-              { label: 'Hidden', value: 'Hidden' },
-              { label: 'Draft', value: 'Draft' },
+              { label: t('status.category.visible'), value: 'Visible' },
+              { label: t('status.category.hidden'), value: 'Hidden' },
+              { label: t('status.category.draft'), value: 'Draft' },
             ],
           },
         ]}
@@ -305,22 +334,24 @@ export const CategoriesPage = () => {
             type='button'
             variant='outline'
             size='sm'
+            disabled
           >
             <Eye />
-            Preview navigation
+            {t('actions.previewNavigation')}
           </Button>
         }
-        emptyTitle='No categories yet'
-        emptyDescription='Categories appear here after merchandising setup.'
+        emptyTitle={t('categories.emptyTitle')}
+        emptyDescription={t('categories.emptyDescription')}
         bulkActions={() => (
           <Button
             type='button'
             variant='outline'
             size='sm'
+            disabled
             className='text-destructive hover:text-destructive'
           >
             <Archive />
-            Archive
+            {t('actions.archive')}
           </Button>
         )}
       />

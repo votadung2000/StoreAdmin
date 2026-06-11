@@ -19,9 +19,20 @@ import { ROUTES } from '@/constants/routes';
 
 export type NavigationGroupLabel = 'Commerce' | 'Operations' | 'System';
 
+export const navigationGroupTranslationKeys: Record<
+  NavigationGroupLabel,
+  string
+> = {
+  Commerce: 'nav.group.commerce',
+  Operations: 'nav.group.operations',
+  System: 'nav.group.system',
+};
+
 export type NavigationItem = {
   label: string;
+  labelKey: string;
   description: string;
+  descriptionKey: string;
   icon: LucideIcon;
   to: string;
   group: NavigationGroupLabel;
@@ -42,7 +53,9 @@ const customerDetailPattern = /^\/customers\/[^/]+$/;
 export const navigationItems = [
   {
     label: 'Dashboard',
+    labelKey: 'nav.dashboard.label',
     description: 'Sales, fulfillment, inventory, and customer overview.',
+    descriptionKey: 'nav.dashboard.description',
     icon: LayoutDashboard,
     to: ROUTES.MAIN.DASHBOARD,
     group: 'Commerce',
@@ -51,7 +64,9 @@ export const navigationItems = [
   },
   {
     label: 'Products',
+    labelKey: 'nav.products.label',
     description: 'Catalog, variants, SKU pricing, and publishing status.',
+    descriptionKey: 'nav.products.description',
     icon: Package,
     to: ROUTES.MAIN.PRODUCTS,
     group: 'Commerce',
@@ -59,7 +74,9 @@ export const navigationItems = [
   },
   {
     label: 'Categories',
+    labelKey: 'nav.categories.label',
     description: 'Category tree, merchandising, storefront visibility, and SEO.',
+    descriptionKey: 'nav.categories.description',
     icon: Tag,
     to: ROUTES.MAIN.CATEGORIES,
     group: 'Commerce',
@@ -67,7 +84,9 @@ export const navigationItems = [
   },
   {
     label: 'Orders',
+    labelKey: 'nav.orders.label',
     description: 'Payments, packing, fulfillment, and customer communication.',
+    descriptionKey: 'nav.orders.description',
     icon: ShoppingCart,
     to: ROUTES.MAIN.ORDERS,
     group: 'Commerce',
@@ -76,7 +95,9 @@ export const navigationItems = [
   },
   {
     label: 'Inventory',
+    labelKey: 'nav.inventory.label',
     description: 'Availability, reservations, movements, and low-stock risk.',
+    descriptionKey: 'nav.inventory.description',
     icon: Boxes,
     to: ROUTES.MAIN.INVENTORY,
     group: 'Operations',
@@ -85,7 +106,9 @@ export const navigationItems = [
   },
   {
     label: 'Returns',
+    labelKey: 'nav.returns.label',
     description: 'Refund requests, exchange approvals, and return intake.',
+    descriptionKey: 'nav.returns.description',
     icon: RotateCcw,
     to: ROUTES.MAIN.RETURNS,
     group: 'Operations',
@@ -93,7 +116,9 @@ export const navigationItems = [
   },
   {
     label: 'Customers',
+    labelKey: 'nav.customers.label',
     description: 'Customer profiles, order history, support tags, and segments.',
+    descriptionKey: 'nav.customers.description',
     icon: Users,
     to: ROUTES.MAIN.CUSTOMERS,
     group: 'Operations',
@@ -101,7 +126,9 @@ export const navigationItems = [
   },
   {
     label: 'Promotions',
+    labelKey: 'nav.promotions.label',
     description: 'Coupons, campaigns, discount rules, and usage limits.',
+    descriptionKey: 'nav.promotions.description',
     icon: Percent,
     to: ROUTES.MAIN.PROMOTIONS,
     group: 'Operations',
@@ -109,7 +136,9 @@ export const navigationItems = [
   },
   {
     label: 'Shipping',
+    labelKey: 'nav.shipping.label',
     description: 'Shipping providers, zones, rates, and fulfillment rules.',
+    descriptionKey: 'nav.shipping.description',
     icon: Truck,
     to: ROUTES.MAIN.SHIPPING,
     group: 'Operations',
@@ -117,7 +146,9 @@ export const navigationItems = [
   },
   {
     label: 'Reports',
+    labelKey: 'nav.reports.label',
     description: 'Revenue, product, inventory, order, and customer reporting.',
+    descriptionKey: 'nav.reports.description',
     icon: ClipboardList,
     to: ROUTES.MAIN.REPORTS,
     group: 'Operations',
@@ -125,7 +156,9 @@ export const navigationItems = [
   },
   {
     label: 'Staff',
+    labelKey: 'nav.staff.label',
     description: 'Team members, invitations, roles, and access status.',
+    descriptionKey: 'nav.staff.description',
     icon: ShieldCheck,
     to: ROUTES.MAIN.STAFF,
     group: 'System',
@@ -133,7 +166,9 @@ export const navigationItems = [
   },
   {
     label: 'Roles',
+    labelKey: 'nav.roles.label',
     description: 'Permission groups, assignment rules, and RBAC coverage.',
+    descriptionKey: 'nav.roles.description',
     icon: Archive,
     to: ROUTES.MAIN.ROLES,
     group: 'System',
@@ -141,7 +176,9 @@ export const navigationItems = [
   },
   {
     label: 'Settings',
+    labelKey: 'nav.settings.label',
     description: 'Store profile, payment, tax, localization, and policy defaults.',
+    descriptionKey: 'nav.settings.description',
     icon: Settings,
     to: ROUTES.MAIN.SETTINGS,
     group: 'System',
@@ -149,7 +186,9 @@ export const navigationItems = [
   },
   {
     label: 'Audit Logs',
+    labelKey: 'nav.auditLogs.label',
     description: 'Sensitive changes, user activity, request IDs, and exports.',
+    descriptionKey: 'nav.auditLogs.description',
     icon: FileClock,
     to: ROUTES.MAIN.AUDIT_LOGS,
     group: 'System',
@@ -165,6 +204,7 @@ const navigationGroupLabels = [
 
 export const navigationGroups = navigationGroupLabels.map((group) => ({
   label: group,
+  labelKey: navigationGroupTranslationKeys[group],
   items: navigationItems.filter((item) => item.group === group),
 }));
 
@@ -172,7 +212,9 @@ const routeMatchers: readonly RouteMeta[] = [
   ...navigationItems,
   {
     label: 'Create Product',
+    labelKey: 'route.createProduct.label',
     description: 'Build product identity, pricing, inventory, and SEO.',
+    descriptionKey: 'route.createProduct.description',
     icon: Package,
     to: ROUTES.MAIN.PRODUCT_NEW,
     group: 'Commerce',
@@ -180,7 +222,9 @@ const routeMatchers: readonly RouteMeta[] = [
   },
   {
     label: 'Edit Product',
+    labelKey: 'route.editProduct.label',
     description: 'Update product identity, pricing, inventory, and SEO.',
+    descriptionKey: 'route.editProduct.description',
     icon: Package,
     to: ROUTES.MAIN.PRODUCT_EDIT,
     group: 'Commerce',
@@ -189,7 +233,9 @@ const routeMatchers: readonly RouteMeta[] = [
   },
   {
     label: 'Product Detail',
+    labelKey: 'route.productDetail.label',
     description: 'SKU, inventory, activity, and publication context.',
+    descriptionKey: 'route.productDetail.description',
     icon: Package,
     to: '/products/',
     group: 'Commerce',
@@ -198,7 +244,9 @@ const routeMatchers: readonly RouteMeta[] = [
   },
   {
     label: 'Order Detail',
+    labelKey: 'route.orderDetail.label',
     description: 'Payment, fulfillment, timeline, and customer service context.',
+    descriptionKey: 'route.orderDetail.description',
     icon: ShoppingCart,
     to: '/orders/',
     group: 'Commerce',
@@ -207,7 +255,9 @@ const routeMatchers: readonly RouteMeta[] = [
   },
   {
     label: 'Customer Detail',
+    labelKey: 'route.customerDetail.label',
     description: 'Profile, loyalty, service notes, and order history.',
+    descriptionKey: 'route.customerDetail.description',
     icon: Users,
     to: '/customers/',
     group: 'Operations',
@@ -216,7 +266,9 @@ const routeMatchers: readonly RouteMeta[] = [
   },
   {
     label: 'Stock Movements',
+    labelKey: 'nav.stockMovements.label',
     description: 'Adjustments, transfers, reservations, and audit trail.',
+    descriptionKey: 'nav.stockMovements.description',
     icon: Boxes,
     to: ROUTES.MAIN.INVENTORY_MOVEMENTS,
     group: 'Operations',

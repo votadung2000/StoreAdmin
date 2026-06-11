@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -5,16 +6,23 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, RefreshCw } from 'lucide-react';
 
-import { otpSchema, type OTPFormValues } from '@/schemas/authSchema';
+import { createOtpSchema, type OTPFormValues } from '@/schemas/authSchema';
 import { ROUTES } from '@/constants/routes';
+import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '@/stores/authStore';
 
 export const OTPPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const signInWithDemoSession = useAuthStore(
+    (state) => state.signInWithDemoSession,
+  );
+  const otpSchema = React.useMemo(() => createOtpSchema(t), [t]);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm<OTPFormValues>({
     resolver: zodResolver(otpSchema),
     defaultValues: {
@@ -23,6 +31,7 @@ export const OTPPage = () => {
   });
 
   const onSubmit = () => {
+    signInWithDemoSession();
     navigate({ to: ROUTES.MAIN.DASHBOARD });
   };
 
@@ -30,10 +39,10 @@ export const OTPPage = () => {
     <>
       <div className='flex flex-col space-y-2 text-left mb-6'>
         <h1 className='text-2xl font-semibold tracking-tight'>
-          Two-factor Authentication
+          {t('auth.otp.title')}
         </h1>
         <p className='text-sm text-zinc-500'>
-          Please enter the authentication code sent to your email address.
+          {t('auth.otp.description')}
         </p>
       </div>
 
@@ -58,21 +67,24 @@ export const OTPPage = () => {
 
         <Button
           type='submit'
-          disabled={isLoading}
+          disabled={isSubmitting}
           className='w-full h-12 bg-zinc-900 hover:bg-zinc-800 text-white flex justify-between items-center px-4 rounded-md uppercase text-xs font-bold tracking-wider'
         >
-          <span>Verify & Sign In</span>
+          <span>{t('actions.verifyAndSignIn')}</span>
           <ArrowRight className='h-4 w-4' />
         </Button>
 
         <div className='pt-4 text-center'>
-          <p className='text-sm text-zinc-500 mb-2'>Didn't receive the code?</p>
+          <p className='text-sm text-zinc-500 mb-2'>
+            {t('auth.otp.didNotReceive')}
+          </p>
           <button
             type='button'
-            className='inline-flex items-center text-sm font-medium text-zinc-900 hover:underline'
+            disabled
+            className='inline-flex items-center text-sm font-medium text-zinc-900 hover:underline disabled:cursor-not-allowed disabled:opacity-50'
           >
             <RefreshCw className='mr-2 h-4 w-4' />
-            Resend Code
+            {t('actions.resendCode')}
           </button>
         </div>
       </form>

@@ -4,6 +4,7 @@ import AppleIcon from '@/assets/svgs/apple.svg';
 import FacebookIcon from '@/assets/svgs/facebook.svg';
 import GoogleIcon from '@/assets/svgs/google.svg';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 type SocialProviderId = 'google' | 'apple' | 'facebook';
 
@@ -55,11 +56,14 @@ const DEFAULT_SOCIAL_AUTH_PROVIDERS = [
  */
 export function AppSocialAuth({
   className,
-  dividerLabel = 'Or continue with',
+  dividerLabel,
   providers = DEFAULT_SOCIAL_AUTH_PROVIDERS,
   onProviderClick,
   ...props
 }: AppSocialAuthProps) {
+  const { t } = useTranslation();
+  const resolvedDividerLabel = dividerLabel ?? t('auth.social.divider');
+
   return (
     <div
       className={cn('space-y-6', className)}
@@ -71,7 +75,7 @@ export function AppSocialAuth({
         </div>
         <div className='relative flex justify-center text-xs uppercase'>
           <span className='bg-background px-2 text-muted-foreground'>
-            {dividerLabel}
+            {resolvedDividerLabel}
           </span>
         </div>
       </div>
@@ -82,6 +86,7 @@ export function AppSocialAuth({
             key={provider.id}
             variant='outline'
             type='button'
+            disabled={!onProviderClick}
             className='flex h-14 items-center justify-center gap-2 rounded-md px-2 transition-colors sm:px-4'
             onClick={() => onProviderClick?.(provider)}
           >
@@ -94,7 +99,9 @@ export function AppSocialAuth({
             <span className='hidden text-sm font-medium xl:inline'>
               {provider.label}
             </span>
-            <span className='sr-only'>Continue with {provider.label}</span>
+            <span className='sr-only'>
+              {t('auth.social.continueWith', { provider: provider.label })}
+            </span>
           </Button>
         ))}
       </div>

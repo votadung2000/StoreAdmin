@@ -1,0 +1,676 @@
+{
+  "language": {
+    "label": "Ngôn ngữ",
+    "english": {
+      "short": "EN",
+      "name": "Tiếng Anh"
+    },
+    "vietnamese": {
+      "short": "VI",
+      "name": "Tiếng Việt"
+    }
+  },
+  "app": {
+    "brand": {
+      "name": "Quản trị cửa hàng",
+      "description": "Bảng điều khiển"
+    },
+    "defaultTitle": "Quản trị cửa hàng",
+    "defaultDescription": "Không gian vận hành",
+    "user": {
+      "fallbackName": "Chủ cửa hàng",
+      "fallbackRole": "Quản trị viên"
+    }
+  },
+  "actions": {
+    "addCategory": "Thêm danh mục",
+    "addProduct": "Thêm sản phẩm",
+    "archive": "Lưu trữ",
+    "backToSignIn": "Quay lại đăng nhập",
+    "createDraft": "Tạo bản nháp",
+    "edit": "Chỉnh sửa",
+    "export": "Xuất",
+    "import": "Nhập",
+    "logout": "Đăng xuất",
+    "markPacked": "Đánh dấu đã đóng gói",
+    "previewNavigation": "Xem trước điều hướng",
+    "print": "In {count}",
+    "printSlips": "In phiếu",
+    "products": "Sản phẩm",
+    "refresh": "Làm mới",
+    "resendCode": "Gửi lại mã",
+    "saveChanges": "Lưu thay đổi",
+    "saveOrder": "Lưu thứ tự",
+    "sendOtp": "Gửi OTP",
+    "signIn": "ĐĂNG NHẬP",
+    "signUp": "ĐĂNG KÝ",
+    "verifyAndSignIn": "Xác minh và đăng nhập"
+  },
+  "field": {
+    "audience": "Đối tượng",
+    "category": "Danh mục",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "email": "Email",
+    "emailAddress": "Địa chỉ email",
+    "name": "Tên",
+    "onHandStock": "Tồn kho hiện có",
+    "password": "Mật khẩu",
+    "price": "Giá",
+    "primarySku": "SKU chính",
+    "salePrice": "Giá khuyến mãi",
+    "seoDescription": "Mô tả SEO",
+    "seoTitle": "Tiêu đề SEO",
+    "sku": "SKU",
+    "slug": "Slug",
+    "status": "Trạng thái"
+  },
+  "validation": {
+    "audienceRequired": "Vui lòng chọn đối tượng",
+    "categoryRequired": "Vui lòng chọn danh mục",
+    "confirmPasswordRequired": "Vui lòng xác nhận mật khẩu",
+    "emailInvalid": "Email không hợp lệ",
+    "nameMin": "Tên phải có ít nhất 3 ký tự",
+    "otpLength": "OTP phải gồm 6 chữ số",
+    "passwordMin": "Mật khẩu phải có ít nhất 6 ký tự",
+    "passwordsDoNotMatch": "Mật khẩu không khớp",
+    "pricePositive": "Giá phải lớn hơn 0",
+    "salePriceLower": "Giá khuyến mãi phải thấp hơn giá niêm yết",
+    "salePriceMin": "Giá khuyến mãi không được âm",
+    "seoDescriptionMin": "Vui lòng nhập mô tả SEO",
+    "seoTitleMin": "Vui lòng nhập tiêu đề SEO",
+    "skuMin": "Vui lòng nhập SKU",
+    "slugMin": "Vui lòng nhập slug",
+    "stockMin": "Tồn kho không được âm"
+  },
+  "placeholder": {
+    "productName": "Premium Canvas Tote",
+    "productSlug": "premium-canvas-tote",
+    "productSku": "BAG-001",
+    "selectCategory": "Chọn danh mục",
+    "seoDescription": "Mô tả sản phẩm cho tìm kiếm và hiển thị ngoài cửa hàng."
+  },
+  "layout": {
+    "forbidden": {
+      "description": "Quyền cần thiết: {permission}",
+      "title": "Bạn không có quyền truy cập khu vực này"
+    },
+    "notifications": "Thông báo",
+    "profile": "Hồ sơ",
+    "search": {
+      "noMatch": "Không tìm thấy khu vực phù hợp",
+      "placeholder": "Tìm kiếm vận hành"
+    }
+  },
+  "loading": {
+    "authDescription": "Đang chuẩn bị luồng đăng nhập.",
+    "sessionDescription": "Đang chuẩn bị không gian quản trị.",
+    "sessionTitle": "Đang kiểm tra phiên"
+  },
+  "notFound": {
+    "action": "Tổng quan",
+    "description": "Tuyến quản trị được yêu cầu không tồn tại.",
+    "title": "Không tìm thấy trang"
+  },
+  "table": {
+    "all": "Tất cả",
+    "clearSearch": "Xóa tìm kiếm",
+    "clearSearchFilter": "Xóa bộ lọc tìm kiếm",
+    "couldNotLoadRecords": "Không thể tải bản ghi",
+    "filteredEmptyDescription": "Điều chỉnh tìm kiếm hoặc bộ lọc để mở rộng kết quả.",
+    "filteredEmptyTitle": "Không có bản ghi phù hợp",
+    "nextPage": "Trang tiếp",
+    "page": "Trang {page} / {total}",
+    "previousPage": "Trang trước",
+    "records": "records",
+    "reset": "Đặt lại",
+    "retry": "Thử lại",
+    "rows": "Dòng",
+    "searchPrefix": "Tìm kiếm: {query}",
+    "selected": "Đã chọn {count}",
+    "showing": "Đang hiện {visible} / {total} bản ghi",
+    "showingFiltered": "Đang hiện {visible} / {total} bản ghi từ {all}"
+  },
+  "auth": {
+    "emailPlaceholder": "name@example.com",
+    "forgotPassword": {
+      "description": "Nhập địa chỉ email và chúng tôi sẽ gửi OTP để đặt lại mật khẩu.",
+      "title": "Quên mật khẩu"
+    },
+    "legal": {
+      "and": "và",
+      "prefix": "Khi bấm {action}, bạn đồng ý với các điều khoản trên website",
+      "privacy": "Chính sách bảo mật",
+      "terms": "Điều khoản dịch vụ"
+    },
+    "otp": {
+      "description": "Nhập mã xác thực đã được gửi đến email của bạn.",
+      "didNotReceive": "Chưa nhận được mã?",
+      "title": "Xác thực hai lớp"
+    },
+    "passwordPlaceholder": "Mật khẩu",
+    "signIn": {
+      "description": "Nhập email và mật khẩu bên dưới để đăng nhập vào tài khoản.",
+      "noAccount": "Chưa có tài khoản?",
+      "title": "Đăng nhập"
+    },
+    "signUp": {
+      "alreadyHaveAccount": "Đã có tài khoản?",
+      "description": "Nhập email và mật khẩu bên dưới để tạo tài khoản.",
+      "title": "Đăng ký"
+    },
+    "social": {
+      "continueWith": "Tiếp tục với {provider}",
+      "divider": "Hoặc tiếp tục với"
+    },
+    "visibility": {
+      "hidePassword": "Ẩn mật khẩu",
+      "showPassword": "Hiện mật khẩu"
+    }
+  },
+  "nav": {
+    "group": {
+      "commerce": "Thương mại",
+      "operations": "Vận hành",
+      "system": "Hệ thống"
+    },
+    "dashboard": {
+      "description": "Tổng quan doanh số, giao hàng, tồn kho và khách hàng.",
+      "label": "Tổng quan"
+    },
+    "products": {
+      "description": "Danh mục sản phẩm, biến thể, giá SKU và trạng thái xuất bản.",
+      "label": "Sản phẩm"
+    },
+    "categories": {
+      "description": "Cây danh mục, ưu tiên trưng bày, hiển thị cửa hàng và SEO.",
+      "label": "Danh mục"
+    },
+    "orders": {
+      "description": "Thanh toán, đóng gói, giao hàng và liên lạc khách hàng.",
+      "label": "Đơn hàng"
+    },
+    "inventory": {
+      "description": "Khả dụng, giữ hàng, luân chuyển và rủi ro sắp hết hàng.",
+      "label": "Tồn kho"
+    },
+    "returns": {
+      "description": "Yêu cầu hoàn tiền, duyệt đổi trả và tiếp nhận hoàn hàng.",
+      "label": "Đổi trả"
+    },
+    "customers": {
+      "description": "Hồ sơ khách hàng, lịch sử đơn hàng, tag hỗ trợ và phân khúc.",
+      "label": "Khách hàng"
+    },
+    "promotions": {
+      "description": "Mã giảm giá, chiến dịch, quy tắc chiết khấu và giới hạn sử dụng.",
+      "label": "Khuyến mãi"
+    },
+    "shipping": {
+      "description": "Đơn vị vận chuyển, vùng giao, bảng giá và quy tắc xử lý.",
+      "label": "Vận chuyển"
+    },
+    "reports": {
+      "description": "Báo cáo doanh thu, sản phẩm, tồn kho, đơn hàng và khách hàng.",
+      "label": "Báo cáo"
+    },
+    "staff": {
+      "description": "Thành viên đội ngũ, lời mời, vai trò và trạng thái truy cập.",
+      "label": "Nhân sự"
+    },
+    "roles": {
+      "description": "Nhóm quyền, quy tắc gán quyền và phạm vi RBAC.",
+      "label": "Vai trò"
+    },
+    "settings": {
+      "description": "Hồ sơ cửa hàng, thanh toán, thuế, ngôn ngữ và chính sách mặc định.",
+      "label": "Cài đặt"
+    },
+    "auditLogs": {
+      "description": "Thay đổi nhạy cảm, hoạt động người dùng, request ID và xuất dữ liệu.",
+      "label": "Nhật ký"
+    },
+    "stockMovements": {
+      "description": "Điều chỉnh, chuyển kho, giữ hàng và lịch sử kiểm tra.",
+      "label": "Luân chuyển"
+    }
+  },
+  "route": {
+    "createProduct": {
+      "description": "Tạo thông tin sản phẩm, giá, tồn kho và SEO.",
+      "label": "Tạo sản phẩm"
+    },
+    "editProduct": {
+      "description": "Cập nhật thông tin sản phẩm, giá, tồn kho và SEO.",
+      "label": "Chỉnh sửa sản phẩm"
+    },
+    "productDetail": {
+      "description": "Ngữ cảnh SKU, tồn kho, hoạt động và xuất bản.",
+      "label": "Chi tiết sản phẩm"
+    },
+    "orderDetail": {
+      "description": "Ngữ cảnh thanh toán, giao hàng, timeline và chăm sóc khách hàng.",
+      "label": "Chi tiết đơn hàng"
+    },
+    "customerDetail": {
+      "description": "Hồ sơ, điểm thân thiết, ghi chú dịch vụ và lịch sử đơn hàng.",
+      "label": "Chi tiết khách hàng"
+    }
+  },
+  "status": {
+    "audience": {
+      "men": "Nam",
+      "unisex": "Unisex",
+      "women": "Nữ"
+    },
+    "category": {
+      "draft": "Bản nháp",
+      "hidden": "Ẩn",
+      "visible": "Hiển thị"
+    },
+    "fulfillment": {
+      "awaitingPayment": "Chờ thanh toán",
+      "delayed": "Chậm trễ",
+      "packed": "Đã đóng gói",
+      "readyToPack": "Sẵn sàng đóng gói",
+      "shipped": "Đã giao"
+    },
+    "generic": {
+      "clear": "Ổn định",
+      "approved": "Đã duyệt",
+      "critical": "Nghiêm trọng",
+      "healthy": "Tốt",
+      "info": "Thông tin",
+      "inTransit": "Đang vận chuyển",
+      "invited": "Đã mời",
+      "limited": "Giới hạn",
+      "missed": "Trễ hạn",
+      "needed": "Cần liên hệ",
+      "needsReview": "Cần xem lại",
+      "onTrack": "Đúng tiến độ",
+      "open": "Đang mở",
+      "optional": "Tùy chọn",
+      "posted": "Đã ghi nhận",
+      "ready": "Sẵn sàng",
+      "required": "Bắt buộc",
+      "review": "Đang xem lại",
+      "scheduled": "Đã lên lịch"
+    },
+    "orderPriority": {
+      "high": "Cao",
+      "normal": "Bình thường"
+    },
+    "payment": {
+      "failed": "Thất bại",
+      "paid": "Đã thanh toán",
+      "pending": "Chờ thanh toán",
+      "refunded": "Đã hoàn tiền"
+    },
+    "product": {
+      "active": "Đang bán",
+      "archived": "Đã lưu trữ",
+      "draft": "Bản nháp",
+      "lowStock": "Sắp hết hàng"
+    },
+    "storefront": {
+      "hidden": "Ẩn",
+      "visible": "Hiển thị"
+    }
+  },
+  "time": {
+    "12MinAgo": "12 phút trước",
+    "18MinAgo": "18 phút trước",
+    "1hAgo": "1 giờ trước",
+    "2dAgo": "2 ngày trước",
+    "2hAgo": "2 giờ trước",
+    "36MinAgo": "36 phút trước",
+    "4dAgo": "4 ngày trước",
+    "48MinAgo": "48 phút trước",
+    "5hAgo": "5 giờ trước",
+    "yesterday": "Hôm qua"
+  },
+  "dashboard": {
+    "dateRange": {
+      "30d": "30 ngày qua",
+      "7d": "7 ngày qua",
+      "ariaLabel": "Khoảng ngày tổng quan",
+      "today": "Hôm nay"
+    },
+    "description": "Sức khỏe doanh số, giao hàng, tồn kho và khách hàng trong hôm nay.",
+    "focus": {
+      "approveRefunds": {
+        "badge": "Tài chính",
+        "detail": "6 yêu cầu hoàn tiền đang chờ kế toán duyệt.",
+        "title": "Duyệt hoàn tiền"
+      },
+      "packOrders": {
+        "badge": "2 giờ tới",
+        "detail": "12 đơn đã thanh toán nằm trong cửa sổ xử lý tiếp theo.",
+        "title": "Đóng gói đơn ưu tiên"
+      },
+      "reviewStock": {
+        "badge": "Khẩn cấp",
+        "detail": "9 SKU sắp hết hàng sau khi trừ lượng đã giữ.",
+        "title": "Kiểm tra rủi ro tồn kho"
+      }
+    },
+    "inventoryAlerts": {
+      "description": "SKU có tồn kho khả dụng bị giới hạn.",
+      "onHand": "{count} trong kho",
+      "reserved": "{count} đã giữ",
+      "title": "Cảnh báo tồn kho"
+    },
+    "metric": {
+      "lowStockSkus": {
+        "comparison": "9 cần đặt lại hôm nay",
+        "label": "SKU sắp hết hàng"
+      },
+      "ordersToday": {
+        "comparison": "+11.7% so với thứ Tư trước",
+        "label": "Đơn hàng hôm nay"
+      },
+      "pendingOrders": {
+        "comparison": "12 qua SLA",
+        "label": "Đơn đang chờ"
+      },
+      "revenueToday": {
+        "comparison": "+18.2% so với hôm qua",
+        "label": "Doanh thu hôm nay"
+      }
+    },
+    "orderFlow": {
+      "description": "Áp lực xử lý hiện tại theo từng giai đoạn vận hành.",
+      "orders": "{count} đơn",
+      "packing": "Đang đóng gói",
+      "refunds": "Hoàn tiền",
+      "title": "Luồng đơn hàng"
+    },
+    "recentActivity": {
+      "bulkPrice": {
+        "detail": "38 SKU được cập nhật bởi chủ cửa hàng",
+        "title": "Hoàn tất cập nhật giá hàng loạt"
+      },
+      "description": "Các thay đổi cần theo dõi trong catalog và vận hành.",
+      "lowStock": {
+        "detail": "Ribbed Knit Jacket còn 5 đơn vị khả dụng",
+        "title": "Chạm ngưỡng sắp hết hàng"
+      },
+      "promotion": {
+        "detail": "Chiến dịch cuối tuần đang hoạt động",
+        "title": "Khuyến mãi đã xuất bản"
+      },
+      "refund": {
+        "detail": "Đơn ST-1041 yêu cầu hoàn tiền bằng credit cửa hàng",
+        "title": "Yêu cầu hoàn tiền mới"
+      },
+      "title": "Hoạt động gần đây"
+    },
+    "revenueTrend": {
+      "description": "Doanh thu hằng ngày trên kênh online và bán lẻ.",
+      "title": "Xu hướng doanh thu"
+    },
+    "title": "Tổng quan"
+  },
+  "products": {
+    "bulk": {
+      "publish": "Xuất bản {count}"
+    },
+    "description": "Quản lý sản phẩm, tồn kho SKU, trạng thái trưng bày và kênh bán.",
+    "emptyDescription": "Sản phẩm sẽ xuất hiện sau khi nhập catalog hoặc tạo sản phẩm.",
+    "emptyTitle": "Chưa có sản phẩm",
+    "searchPlaceholder": "Tìm sản phẩm, SKU, danh mục",
+    "summary": {
+      "drafts": {
+        "detail": "Chờ xuất bản",
+        "label": "Bản nháp"
+      },
+      "inventoryValue": {
+        "detail": "Ước tính tồn kho",
+        "label": "Giá trị tồn kho"
+      },
+      "needsStock": {
+        "detail": "Cần đặt lại hàng",
+        "label": "Cần bổ sung"
+      },
+      "published": {
+        "detail": "Sản phẩm đang bán",
+        "label": "Đã xuất bản"
+      }
+    },
+    "title": "Sản phẩm",
+    "viewProduct": "Xem {name}",
+    "editProduct": "Chỉnh sửa {name}",
+    "selectAll": "Chọn tất cả sản phẩm",
+    "selectProduct": "Chọn {name}",
+    "table": {
+      "available": "Khả dụng",
+      "channel": "Kênh",
+      "price": "Giá",
+      "product": "Sản phẩm",
+      "updated": "Cập nhật",
+      "reserved": "{count} đã giữ"
+    }
+  },
+  "productDetail": {
+    "auditDescription": "Lưu trữ, xuất bản và thay đổi giá cần thao tác rõ ràng của nhân viên.",
+    "auditTitle": "Sẵn sàng kiểm toán",
+    "availableStock": "Tồn khả dụng",
+    "catalogDescription": "Thông tin sản phẩm, trạng thái xuất bản và ngữ cảnh trưng bày.",
+    "catalogTitle": "Tóm tắt catalog",
+    "inventoryDescription": "Tồn khả dụng bằng tồn hiện có trừ số lượng đã giữ.",
+    "inventoryTitle": "Sổ tồn kho",
+    "lastUpdate": "Cập nhật lần cuối",
+    "notFoundDescription": "Sản phẩm được yêu cầu không tồn tại.",
+    "notFoundState": "Kiểm tra ID sản phẩm hoặc quay lại danh sách sản phẩm.",
+    "notFoundTitle": "Không tìm thấy sản phẩm",
+    "onHand": "Tồn hiện có",
+    "reserved": "Đã giữ",
+    "seoDescription": "Tiêu đề, slug, mô tả và preview tìm kiếm sẵn sàng để kiểm tra.",
+    "seoTitle": "Dữ liệu SEO",
+    "variantDescription": "Tính duy nhất SKU, thuộc tính và ràng buộc giá được kiểm soát trong form.",
+    "variantTitle": "Quy tắc biến thể"
+  },
+  "productForm": {
+    "alert": {
+      "description": "Bản nháp sản phẩm đã sẵn sàng để đội vận hành xem lại.",
+      "title": "Bản nháp đã hợp lệ"
+    },
+    "description": "Tạo thông tin sản phẩm, giá, tồn kho, SEO và trạng thái xuất bản trong một luồng.",
+    "identity": {
+      "description": "Các trường catalog cốt lõi dùng cho storefront và vận hành.",
+      "title": "Thông tin sản phẩm"
+    },
+    "pricing": {
+      "description": "Giá SKU, giới hạn khuyến mãi và tồn kho khả dụng.",
+      "title": "Giá và tồn kho"
+    },
+    "publishing": {
+      "description": "Đối tượng, trạng thái và hiển thị vận hành.",
+      "title": "Xuất bản"
+    },
+    "seo": {
+      "description": "Dữ liệu tìm kiếm và mô tả trưng bày.",
+      "title": "Dữ liệu SEO"
+    },
+    "status": {
+      "validatedDraft": "Bản nháp đã kiểm tra"
+    },
+    "step": {
+      "identity": "Thông tin",
+      "inventory": "Tồn kho",
+      "pricing": "Giá",
+      "seo": "SEO"
+    }
+  },
+  "categories": {
+    "description": "Tổ chức sản phẩm theo cây danh mục, ưu tiên trưng bày, hiển thị cửa hàng và điểm SEO.",
+    "emptyDescription": "Danh mục sẽ xuất hiện sau khi thiết lập.",
+    "emptyTitle": "Chưa có danh mục",
+    "searchPlaceholder": "Tìm danh mục, slug, danh mục cha",
+    "selectAll": "Chọn tất cả danh mục",
+    "selectCategory": "Chọn {name}",
+    "summary": {
+      "averageSeo": {
+        "detail": "Điểm sẵn sàng",
+        "label": "SEO trung bình"
+      },
+      "categoryRevenue": {
+        "detail": "Tổng 30 ngày",
+        "label": "Doanh thu danh mục"
+      },
+      "hiddenOrDraft": {
+        "detail": "Cần xem lại",
+        "label": "Ẩn hoặc bản nháp"
+      },
+      "visible": {
+        "detail": "Khu vực cửa hàng",
+        "label": "Đang hiện"
+      }
+    },
+    "table": {
+      "parent": "Danh mục cha",
+      "products": "Sản phẩm",
+      "revenue": "Doanh thu",
+      "root": "Gốc",
+      "seo": "SEO",
+      "sort": "Thứ tự"
+    },
+    "title": "Categories",
+    "tree": {
+      "description": "Danh mục gốc và con được sắp xếp cho điều hướng cửa hàng.",
+      "itemMeta": "{count} sản phẩm / thứ tự {order}",
+      "title": "Cây danh mục"
+    },
+    "detail": {
+      "description": "Tóm tắt trưng bày và kiểm tra vận hành.",
+      "revenue30d": "Doanh thu 30 ngày",
+      "seoScore": "Điểm SEO",
+      "storefrontHidden": "Ẩn khỏi điều hướng cửa hàng",
+      "storefrontTitle": "Hiển thị cửa hàng",
+      "storefrontVisible": "Đang hiện trong điều hướng cửa hàng"
+    }
+  },
+  "orders": {
+    "bulk": {
+      "print": "In {count}"
+    },
+    "description": "Theo dõi thanh toán, hàng đợi đóng gói, giao hàng và ngoại lệ hỗ trợ.",
+    "emptyDescription": "Đơn hàng mới sẽ xuất hiện khi checkout được kết nối.",
+    "emptyTitle": "Chưa có đơn hàng",
+    "searchPlaceholder": "Tìm đơn hàng, khách hàng, email",
+    "selectAll": "Chọn tất cả đơn hàng",
+    "selectOrder": "Chọn đơn {id}",
+    "summary": {
+      "exceptions": {
+        "detail": "Cần xem lại",
+        "label": "Ngoại lệ"
+      },
+      "packingQueue": {
+        "detail": "Tác vụ kho",
+        "label": "Hàng đợi đóng gói"
+      },
+      "paidRevenue": {
+        "detail": "Sẵn sàng xử lý",
+        "label": "Doanh thu đã thanh toán"
+      },
+      "pendingPayment": {
+        "detail": "Danh sách cần theo dõi",
+        "label": "Chờ thanh toán"
+      }
+    },
+    "table": {
+      "customer": "Khách hàng",
+      "fulfillment": "Giao hàng",
+      "order": "Đơn hàng",
+      "payment": "Thanh toán",
+      "placed": "Thời điểm",
+      "priority": "Ưu tiên",
+      "total": "Tổng"
+    },
+    "title": "Đơn hàng",
+    "viewOrder": "Xem đơn {id}"
+  },
+  "orderDetail": {
+    "carrierHandoff": {
+      "detail": {
+        "shipped": "Đã có mã theo dõi",
+        "waiting": "Đang chờ giao hàng"
+      },
+      "title": "Bàn giao vận chuyển"
+    },
+    "customerContact": "Liên hệ khách hàng",
+    "description": "{customer} / {items} sản phẩm / {placedAt}",
+    "fraudReview": "Kiểm tra gian lận",
+    "fulfillment": {
+      "description": "Trạng thái xử lý tại kho.",
+      "title": "Giao hàng"
+    },
+    "notFoundDescription": "Đơn hàng được yêu cầu không tồn tại.",
+    "notFoundState": "Kiểm tra ID đơn hàng hoặc quay lại danh sách đơn hàng.",
+    "notFoundTitle": "Không tìm thấy đơn hàng",
+    "packingSla": "SLA đóng gói",
+    "paymentAuthorized": {
+      "title": "Thanh toán đã ủy quyền"
+    },
+    "payment": {
+      "title": "Thanh toán"
+    },
+    "priority": {
+      "description": "Xử lý dịch vụ và SLA.",
+      "title": "Ưu tiên"
+    },
+    "timeline": {
+      "description": "Sự kiện thanh toán, đóng gói, bàn giao và vận chuyển.",
+      "title": "Dòng thời gian"
+    },
+    "warehouseQueue": {
+      "title": "Hàng đợi kho"
+    }
+  },
+  "module": {
+    "common": {
+      "bulkExport": "Xuất {count}",
+      "emptyDescription": "Bản ghi sẽ xuất hiện sau khi API backend được kết nối.",
+      "emptyTitle": "Chưa có bản ghi {title}",
+      "governance": {
+        "description": "Sở hữu, phê duyệt, xuất dữ liệu và kiểm toán.",
+        "exportCadence": "Tần suất xuất",
+        "ownerApproval": "Phê duyệt chủ sở hữu",
+        "reviewWindow": "Khung thời gian xem lại",
+        "sensitiveChanges": "Thay đổi nhạy cảm",
+        "title": "Quản trị"
+      },
+      "operationalQueue": {
+        "description": "Các mục ưu tiên cần xem lại hoặc theo dõi.",
+        "title": "Hàng đợi"
+      },
+      "searchPlaceholder": "Tìm {title}",
+      "selectAll": "Chọn tất cả bản ghi {title}",
+      "workflow": {
+        "apply": "Áp dụng",
+        "audit": "Kiểm toán",
+        "description": "Luồng sản xuất gọn nhẹ cho thao tác, xem lại và kiểm toán.",
+        "review": "Xem lại",
+        "title": "Trạng thái quy trình"
+      }
+    },
+    "primaryAction": {
+      "auditLogs": "Xuất nhật ký",
+      "customers": "Thêm khách hàng",
+      "inventory": "Điều chỉnh tồn",
+      "inventoryMovements": "Tạo luân chuyển",
+      "promotions": "Tạo chiến dịch",
+      "reports": "Tạo báo cáo",
+      "returns": "Tạo đổi trả",
+      "roles": "Tạo vai trò",
+      "settings": "Cập nhật cài đặt",
+      "shipping": "Thêm bảng giá",
+      "staff": "Mời nhân sự"
+    },
+    "table": {
+      "metric": "Chỉ số",
+      "name": "Tên",
+      "owner": "Phụ trách",
+      "updated": "Cập nhật"
+    }
+  }
+}

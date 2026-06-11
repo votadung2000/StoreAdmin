@@ -1,0 +1,23 @@
+
+export const genericStatusKey: Record<string, string> = {
+  Active: 'status.product.active',
+  Approved: 'status.generic.approved',
+  Critical: 'status.generic.critical',
+  Clear: 'status.generic.clear',
+  Healthy: 'status.generic.healthy',
+  Info: 'status.generic.info',
+  'In transit': 'status.generic.inTransit',
+  Invited: 'status.generic.invited',
+  Limited: 'status.generic.limited',
+  Missed: 'status.generic.missed',
+  Needed: 'status.generic.needed',
+  'Needs review': 'status.generic.needsReview',
+  'On track': 'status.generic.onTrack',
+  Open: 'status.generic.open',
+  Optional: 'status.generic.optional',
+  Posted: 'status.generic.posted',
+  Ready: 'status.generic.ready',
+  Required: 'status.generic.required',
+  Review: 'status.generic.review',
+  Scheduled: 'status.generic.scheduled',
+};
